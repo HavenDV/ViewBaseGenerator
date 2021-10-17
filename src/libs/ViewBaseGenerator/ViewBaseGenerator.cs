@@ -13,16 +13,18 @@ public class ViewBaseGenerator : ISourceGenerator
     {
         try
         {
-            var classes = new List<ViewBaseClass>();
-            var @namespace =
-                GetGlobalOption(context, "Namespace") ??
-                throw new InvalidOperationException("Namespace is required.");
+            var classes = context.AdditionalFiles
+                .Select(text => ViewBaseClass.FromPath(
+                    text.Path,
+                    GetRequiredOption(context, text, "BaseClass"),
+                    GetOption(context, text, "Modifier") ?? "public"))
+                .ToArray();
 
             context.AddSource(
                 "ViewBase",
                 SourceText.From(
                     CodeGenerator.GenerateViewBaseClasses(
-                        @namespace,
+                        GetRequiredGlobalOption(context, "Namespace"),
                         classes),
                     Encoding.UTF8));
         }
@@ -59,18 +61,37 @@ public class ViewBaseGenerator : ISourceGenerator
             : null;
     }
 
-    //private static string? GetOption(
-    //    GeneratorExecutionContext context, 
-    //    string name, 
-    //    AdditionalText text)
-    //{
-    //    return context.AnalyzerConfigOptions.GetOptions(text).TryGetValue(
-    //        $"build_metadata.AdditionalFiles.{nameof(HResourcesGenerator)}_{name}", 
-    //        out var result) &&
-    //        !string.IsNullOrWhiteSpace(result)
-    //        ? result
-    //        : null;
-    //}
+    private static string? GetOption(
+        GeneratorExecutionContext context,
+        AdditionalText text,
+        string name)
+    {
+        return context.AnalyzerConfigOptions.GetOptions(text).TryGetValue(
+            $"build_metadata.AdditionalFiles.{nameof(ViewBaseGenerator)}_{name}",
+            out var result) &&
+            !string.IsNullOrWhiteSpace(result)
+            ? result
+            : null;
+    }
+
+    private static string GetRequiredGlobalOption(
+        GeneratorExecutionContext context,
+        string name)
+    {
+        return
+            GetGlobalOption(context, name) ??
+            throw new InvalidOperationException($"{name} is required.");
+    }
+
+    private static string GetRequiredOption(
+        GeneratorExecutionContext context,
+        AdditionalText text,
+        string name)
+    {
+        return
+            GetOption(context, text, name) ??
+            throw new InvalidOperationException($"{name} is required.");
+    }
 
     #endregion
 }
