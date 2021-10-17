@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\libs\UwpViewBaseGenerator\UwpViewBaseGenerator.csproj" />
+    <ProjectReference Include="..\..\libs\ViewBaseGenerator\ViewBaseGenerator.csproj" />
   </ItemGroup>
 
 </Project>

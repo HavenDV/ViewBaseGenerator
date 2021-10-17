@@ -19,8 +19,8 @@
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <Authors>havendv</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/HavenDV/UwpViewBaseGenerator</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/HavenDV/UwpViewBaseGenerator</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/HavenDV/ViewBaseGenerator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/HavenDV/ViewBaseGenerator</RepositoryUrl>
     <PackageIcon>nuget_icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>

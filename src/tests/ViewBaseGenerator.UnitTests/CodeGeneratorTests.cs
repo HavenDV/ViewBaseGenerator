@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UwpViewBaseGenerator.UnitTests
+namespace H.Generators.UnitTests
 {
     [TestClass]
     public class CodeGeneratorTests

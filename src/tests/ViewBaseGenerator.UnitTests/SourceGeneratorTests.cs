@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Reflection;
 
-namespace UwpViewBaseGenerator.UnitTests
+namespace H.Generators.UnitTests
 {
     [TestClass]
     public class SourceGeneratorTests
@@ -32,7 +32,7 @@ namespace MyCode
                 },
                 new CSharpCompilationOptions(OutputKind.ConsoleApplication));
 
-            var generator = new UwpViewBaseGenerator();
+            var generator = new ViewBaseGenerator();
             var driver = (GeneratorDriver)CSharpGeneratorDriver.Create(generator);
 
             driver.RunGeneratorsAndUpdateCompilation(
