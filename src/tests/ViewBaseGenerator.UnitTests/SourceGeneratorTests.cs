@@ -1,59 +1,55 @@
-using FluentAssertions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Reflection;
 
-namespace H.Generators.UnitTests
-{
-    [TestClass]
-    public class SourceGeneratorTests
-    {
-        [TestMethod]
-        public void CompileTest()
-        {
-            var inputCompilation = CSharpCompilation.Create(
-                "compilation",
-                new[] { CSharpSyntaxTree.ParseText(@"
-namespace MyCode
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-        }
-    }
-}
-") },
-                new[]
-                {
-                    MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location),
-                },
-                new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+namespace H.Generators.UnitTests;
 
-            var generator = new ViewBaseGenerator();
-            var driver = (GeneratorDriver)CSharpGeneratorDriver.Create(generator);
+//[TestClass]
+//public class SourceGeneratorTests
+//{
+//    [TestMethod]
+//    public void CompileTest()
+//    {
+//        var inputCompilation = CSharpCompilation.Create(
+//            "compilation",
+//            new[] { CSharpSyntaxTree.ParseText(@"
+//namespace MyCode
+//{
+//    public class Program
+//    {
+//        public static void Main(string[] args)
+//        {
+//        }
+//    }
+//}
+//") },
+//            new[]
+//            {
+//                    MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location),
+//            },
+//            new CSharpCompilationOptions(OutputKind.ConsoleApplication));
 
-            driver.RunGeneratorsAndUpdateCompilation(
-                inputCompilation,
-                out var outputCompilation,
-                out var diagnostics);
+//        var generator = new ViewBaseGenerator();
+//        var driver = (GeneratorDriver)CSharpGeneratorDriver.Create(generator);
 
-            diagnostics.Should().BeEmpty();
-            outputCompilation.SyntaxTrees.Should().HaveCount(3);
+//        driver.RunGeneratorsAndUpdateCompilation(
+//            inputCompilation,
+//            out var outputCompilation,
+//            out var diagnostics);
 
-            foreach (var tree in outputCompilation.SyntaxTrees)
-            {
-                Console.WriteLine($@"
-{tree.FilePath}
-{tree.GetText()}");
-            }
+//        diagnostics.Should().BeEmpty();
+//        outputCompilation.SyntaxTrees.Should().HaveCount(3);
 
-            foreach (var diagnostic in outputCompilation.GetDiagnostics())
-            {
-                Console.WriteLine($"{diagnostic}");
-            }
-        }
-    }
-}
+//        foreach (var tree in outputCompilation.SyntaxTrees)
+//        {
+//            Console.WriteLine($@"
+//{tree.FilePath}
+//{tree.GetText()}");
+//        }
+
+//        foreach (var diagnostic in outputCompilation.GetDiagnostics())
+//        {
+//            Console.WriteLine($"{diagnostic}");
+//        }
+//    }
+//}

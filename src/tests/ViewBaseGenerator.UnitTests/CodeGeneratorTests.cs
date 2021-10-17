@@ -1,32 +1,26 @@
-using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+namespace H.Generators.UnitTests;
 
-namespace H.Generators.UnitTests
+[TestClass]
+public class CodeGeneratorTests
 {
-    [TestClass]
-    public class CodeGeneratorTests
+    [TestMethod]
+    public void GenerateTest()
     {
-        [TestMethod]
-        public void GenerateTest()
+        var code = CodeGenerator.GenerateViewBaseClasses("Test", new[]
         {
-            var code = CodeGenerator.GenerateResources("H", "internal", "Resources", new[]
-            {
-                new Resource("path1.png"),
-                new Resource("path with whitespaces.png"),
+                new ViewBaseClass("public", "TestViewBase", "ReactiveControl", "TestViewModel"),
             });
 
-            code.Should().Be(@"
-#nullable enable
-
-namespace H
+        code.Should().Be(@"
+namespace Test
 {
-    internal static class Resources
+
+    public abstract partial class TestViewBase
+    : ReactiveControl<TestViewModel>
     {
-        public static Resource path1_png => new Resource(""path1.png"");
-        public static Resource path_with_whitespaces_png => new Resource(""path with whitespaces.png"");
     }
+
 }
 ");
-        }
     }
 }
