@@ -3,13 +3,8 @@ on: [ push ]
 
 jobs:
   build:
-    strategy:
-      matrix:
-        dotnet: [ '5.0.x' ]
-        os: [ ubuntu-latest ]
-
-    runs-on: ${{ matrix.os }}
-    name: ${{ matrix.os }} - ${{ matrix.dotnet }}
+    runs-on: ubuntu-latest
+    name: Build, test and publish
     env:
       DOTNET_NOLOGO: true
     
@@ -30,7 +25,8 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ matrix.dotnet }}
+        dotnet-version: '6.0.x'
+        include-prerelease: true
       
     - name: Generate Package Release Notes
       run: |
