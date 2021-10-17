@@ -5,4 +5,4 @@ jobs:
   call-workflow-1:
     uses: HavenDV/ViewBaseGenerator/.github/workflows/dotnet_build-test-publish.yml@master
     secrets:
-      token: ${{ secrets.NUGET_KEY }}
+      NUGET_KEY: ${{ secrets.NUGET_KEY }}
