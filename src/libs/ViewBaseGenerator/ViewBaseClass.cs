@@ -8,14 +8,15 @@ public readonly record struct ViewBaseClass(
 {
     public static ViewBaseClass FromPath(
         string path,
+        string modifier,
         string baseClass,
-        string modifier)
+        string viewModelNamespace)
     {
         path = path ?? throw new ArgumentNullException(nameof(path));
 
-        var viewName = Path.GetFileNameWithoutExtension(path);
+        var viewName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
         var viewBaseName = viewName.Replace("View", "ViewBase");
-        var viewModelName = viewName.Replace("View", "ViewModel");
+        var viewModelName = $"{viewModelNamespace}.{viewName.Replace("View", "ViewModel")}";
 
         return new ViewBaseClass(modifier, viewBaseName, baseClass, viewModelName);
     }

@@ -7,6 +7,7 @@
   <ItemGroup>
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_BaseClass" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_Modifier" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_ViewModelNamespace" />
   </ItemGroup>
 
 </Project>

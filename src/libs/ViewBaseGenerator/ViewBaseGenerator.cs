@@ -17,8 +17,9 @@ public class ViewBaseGenerator : ISourceGenerator
                 .Where(text => GetOption(context, text, "BaseClass") != null)
                 .Select(text => ViewBaseClass.FromPath(
                     text.Path,
+                    GetOption(context, text, "Modifier") ?? "public",
                     GetOption(context, text, "BaseClass") ?? string.Empty,
-                    GetOption(context, text, "Modifier") ?? "public"))
+                    GetOption(context, text, "ViewModelNamespace") ?? string.Empty))
                 .ToArray();
 
             context.AddSource(
