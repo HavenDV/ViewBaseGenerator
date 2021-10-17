@@ -14,9 +14,10 @@ public class ViewBaseGenerator : ISourceGenerator
         try
         {
             var classes = context.AdditionalFiles
+                .Where(text => GetOption(context, text, "BaseClass") != null)
                 .Select(text => ViewBaseClass.FromPath(
                     text.Path,
-                    GetRequiredOption(context, text, "BaseClass"),
+                    GetOption(context, text, "BaseClass") ?? string.Empty,
                     GetOption(context, text, "Modifier") ?? "public"))
                 .ToArray();
 
@@ -80,16 +81,6 @@ public class ViewBaseGenerator : ISourceGenerator
     {
         return
             GetGlobalOption(context, name) ??
-            throw new InvalidOperationException($"{name} is required.");
-    }
-
-    private static string GetRequiredOption(
-        GeneratorExecutionContext context,
-        AdditionalText text,
-        string name)
-    {
-        return
-            GetOption(context, text, name) ??
             throw new InvalidOperationException($"{name} is required.");
     }
 
