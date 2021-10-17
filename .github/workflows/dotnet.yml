@@ -1,8 +1,9 @@
-﻿name: .NET
+﻿name: Build, test and publish
 on: [ push ]
 
 jobs:
-  call-workflow-1:
-    uses: HavenDV/ViewBaseGenerator/.github/workflows/dotnet_build-test-publish.yml@master
+  build-test-publish:
+    name: Build, test and publish
+    uses: HavenDV/workflows/dotnet_build-test-publish.yml@master
     secrets:
       NUGET_KEY: ${{ secrets.NUGET_KEY }}
