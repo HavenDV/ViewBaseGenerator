@@ -16,51 +16,12 @@ Install-Package ViewBaseGenerator
 ### Usage
 
 ```xml
-<PropertyGroup>
-  <HResourcesGenerator_WithSystemDrawing>true</HResourcesGenerator_WithSystemDrawing>
-</PropertyGroup>
+  <ViewBaseGenerator_Namespace>YourNamespace.Views</ViewBaseGenerator_Namespace>
 
-<ItemGroup Label="Images">
-  <EmbeddedResource Include="Images\*.png" />
-  <AdditionalFiles Include="Images\*.png" />
-</ItemGroup>
+  <ItemGroup Label="ViewBase">
+    <AdditionalFiles Include="..\..\shared\YourNamespace.Shared\Views\**\*.xaml.cs" ViewBaseGenerator_BaseClass="ReactiveUI.Uno.ReactiveUserControl" ViewBaseGenerator_ViewModelNamespace="YourNamespace.ViewModels" Visible="False" />
+  </ItemGroup>
 ```
-
-After it, use resource in code:
-```cs
-var image = H.Resources.image_name_png.AsImage();
-// or
-var bytes = H.Resources.image_name_png.AsBytes();
-```
-
-Available methods:
-- System.Drawing.Image AsImage() (only if `HResourcesGenerator_WithSystemDrawing` is true)
-- System.IO.Stream AsStream()
-- string AsString()
-- byte[] AsBytes()
-
-Global options(Default values are provided and can be omitted):
-```xml
-<PropertyGroup>
-  <HResourcesGenerator_Namespace>H</HResourcesGenerator_Namespace>
-  <HResourcesGenerator_Modifier>internal</HResourcesGenerator_Modifier>
-  <HResourcesGenerator_ClassName>Resources</HResourcesGenerator_ClassName>
-  <HResourcesGenerator_AddResourcesFolder>true</HResourcesGenerator_AddResourcesFolder>
-  <HResourcesGenerator_WithSystemDrawing>false</HResourcesGenerator_WithSystemDrawing>
-</PropertyGroup>
-```
-
-By default, it includes this code:
-```xml
-<ItemGroup Condition="$(HResourcesGenerator_AddResourcesFolder)">
-  <EmbeddedResource Include="Resources\**\*.*" />
-  <AdditionalFiles Include="Resources\**\*.*" />
-</ItemGroup>
-```
-You can disable this behavior with `<HResourcesGenerator_AddResourcesFolder>false</HResourcesGenerator_AddResourcesFolder>`
-
-### Alternatives
-- [Resourcer.Fody](https://github.com/Fody/Resourcer)
 
 ### Contacts
 * [mail](mailto:havendv@gmail.com)
