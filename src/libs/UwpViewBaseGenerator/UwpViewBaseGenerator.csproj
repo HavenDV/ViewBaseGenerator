@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="UwpViewBaseGenerator.props" Pack="true" PackagePath="build" />
+    <None Include="ViewBaseGenerator.props" Pack="true" PackagePath="build" />
   </ItemGroup>
 
   <ItemGroup>
