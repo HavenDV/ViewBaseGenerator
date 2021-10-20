@@ -13,8 +13,7 @@
 Install-Package ViewBaseGenerator
 ```
 
-### UWP Only
-
+### UWP
 ```xml
   <PropertyGroup>
     <ViewBaseGenerator_Namespace>YourNamespace.Views</ViewBaseGenerator_Namespace>
@@ -25,23 +24,15 @@ Install-Package ViewBaseGenerator
   </ItemGroup>
 ```
 
-### Uno
+### Uno (projects besides UWP)
 Uno uses Source Generators and there is currently no way to use the output of one generator in another. 
 Therefore, the solution is somewhat more complicated:
-1. Create `global.json` in repository root directory with this content:
-```json
-{
-  "msbuild-sdks": {
-    "MSBuild.Sdk.Extras": "3.0.22"
-  }
-}
-```
-2. Create new project like this:
+1. Create new project like this:
 ```xml
-<Project Sdk="MSBuild.Sdk.Extras">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>uap10.0.19041;netstandard2.0;net6.0-maccatalyst;net6.0-android;net6.0-ios;net6.0-macos</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0-android;net6.0-ios;net6.0-macos;net6.0-maccatalyst</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -73,7 +64,7 @@ Therefore, the solution is somewhat more complicated:
 	
 </Project>
 ```
-3. Add this project reference to your apps.
+2. Add this project reference to your apps.
 
 ## Contacts
 * [mail](mailto:havendv@gmail.com)
