@@ -4,11 +4,11 @@ namespace H.Generators.UnitTests;
 public class CodeGeneratorTests
 {
     [TestMethod]
-    public void GenerateTest()
+    public void GenerateViewBases()
     {
-        var code = CodeGenerator.GenerateViewBaseClasses("Test", new[]
+        var code = ViewBaseCodeGenerator.GenerateViewBases("Test", new[]
         {
-                new ViewBaseClass("public", "TestViewBase", "ReactiveControl", "TestViewModel"),
+                new ViewBase("public", "TestViewBase", "ReactiveControl", "TestViewModel"),
             });
 
         code.Should().Be(@"
