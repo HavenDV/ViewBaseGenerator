@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet">
-    <Description>Generates ViewBase classes for UWP/Uno projects.</Description>
+    <Description>Generates ViewBase classes for UWP/Uno projects.
+$(PACKAGE_RELEASE_NOTES)</Description>
     <PackageTags>viewbase, generator, source generator, csharp 9</PackageTags>
     <DevelopmentDependency>true</DevelopmentDependency>
     <IncludeBuildOutput>false</IncludeBuildOutput>
