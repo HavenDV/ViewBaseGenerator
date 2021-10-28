@@ -11,7 +11,10 @@ public static class ConstructorCodeGenerator
         var usingReactiveUI = constructors.Any(x => x.SetReactiveUIDataContext);
 
         return @$"{(usingReactiveUI ? @"
-using ReactiveUI;" : string.Empty)}
+using ReactiveUI;
+using System.Reactive.Disposables;" : string.Empty)}
+
+#nullable enable
 
 namespace {@namespace}
 {{
@@ -33,6 +36,9 @@ string.Join(Environment.NewLine, constructors.Select(GenerateConstructor))
         partial void BeforeInitializeComponent();
         partial void AfterInitializeComponent();
 
+{(setReactiveUIDataContext ? @"
+        partial void AfterWhenActivated(CompositeDisposable disposables);" : string.Empty)}
+
         public {name}()
         {{
             BeforeInitializeComponent();
@@ -40,10 +46,18 @@ string.Join(Environment.NewLine, constructors.Select(GenerateConstructor))
             InitializeComponent();
 
             AfterInitializeComponent();
+
 {(setReactiveUIDataContext ? @"
-            _ = this.WhenActivated(disposable =>
+            _ = this.WhenActivated(disposables =>
             {
                 DataContext = ViewModel;
+
+                if (ViewModel != null)
+                {
+                    return;
+                }
+
+                AfterWhenActivated(disposables);
             });" : string.Empty)}
         }}
 
