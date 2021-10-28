@@ -21,6 +21,12 @@ public class ViewBaseGenerator : ISourceGenerator
                     GetOption(context, text, "BaseClass") ?? string.Empty,
                     GetOption(context, text, "ViewModelNamespace") ?? string.Empty))
                 .ToArray();
+            var constructors = context.AdditionalFiles
+                .Where(text => GetOption(context, text, "GenerateConstructor") != null)
+                .Select(text => Constructor.FromPath(
+                    text.Path,
+                    GetOption(context, text, "Modifier") ?? "public"))
+                .ToArray();
 
             context.AddSource(
                 "ViewBase",
@@ -28,6 +34,13 @@ public class ViewBaseGenerator : ISourceGenerator
                     CodeGenerator.GenerateViewBaseClasses(
                         GetRequiredGlobalOption(context, "Namespace"),
                         classes),
+                    Encoding.UTF8));
+            context.AddSource(
+                "Constructors",
+                SourceText.From(
+                    ConstructorCodeGenerator.GenerateConstructors(
+                        GetRequiredGlobalOption(context, "Namespace"),
+                        constructors),
                     Encoding.UTF8));
         }
         catch (Exception exception)
