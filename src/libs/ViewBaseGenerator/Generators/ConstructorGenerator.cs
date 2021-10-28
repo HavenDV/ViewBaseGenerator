@@ -16,7 +16,6 @@ public class ConstructorGenerator : ISourceGenerator
                 .Select(text => Constructor.FromPath(
                     text.Path,
                     context.GetOption(text, "Modifier") ?? "public",
-                    Convert.ToBoolean(context.GetOption(text, "IsDeffered") ?? bool.FalseString),
                     Convert.ToBoolean(context.GetOption(text, "SetReactiveUIDataContext") ?? bool.FalseString)))
                 .ToArray();
 

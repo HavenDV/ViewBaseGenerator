@@ -9,9 +9,7 @@
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_Modifier" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_ViewModelNamespace" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_GenerateConstructor" />
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_IsDeffered" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_SetReactiveUIDataContext" />
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_GenerateDefferedConstructor" />
   </ItemGroup>
 
 </Project>

@@ -28,7 +28,7 @@ string.Join("\n", constructors.Select(GenerateConstructor))
     public static string GenerateConstructor(
         Constructor constructor)
     {
-        var (modifier, name, deffer, setRx) = constructor;
+        var (modifier, name, setRx) = constructor;
 
         return @$"
     {modifier} partial class {name}
@@ -39,33 +39,25 @@ string.Join("\n", constructors.Select(GenerateConstructor))
 {(setRx ? @"
         partial void AfterWhenActivated(CompositeDisposable disposables);" : string.Empty)}
 
-{(deffer ? @"
-        partial void InitializeComponentDeffered();" : string.Empty)}
-{(deffer && setRx ? @"
-        partial void WhenActivatedDeffered();" : string.Empty)}
-
         public {name}()
         {{
             BeforeInitializeComponent();
-{(deffer ? @"
-            InitializeComponentDeffered();" : @"
-            InitializeComponent();")}
+
+            InitializeComponent();
 
             AfterInitializeComponent();
-{(setRx && !deffer ? @"
+{(setRx ? @"
             _ = this.WhenActivated(disposables =>
             {
                 DataContext = ViewModel;
 
-                if (ViewModel != null)
+                if (ViewModel == null)
                 {
                     return;
                 }
 
                 AfterWhenActivated(disposables);
-            });" :
-setRx && deffer ? @"
-            WhenActivatedDeffered();" : string.Empty)}
+            });" : string.Empty)}
         }}
 
     }}
