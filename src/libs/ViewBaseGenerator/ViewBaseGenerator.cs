@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace H.Generators;
 
 [Generator]
-public class ViewBaseGenerator : ISourceGenerator
+public class ViewBaseGenerator : GeneratorBase, ISourceGenerator
 {
     #region Methods
 
@@ -86,42 +86,6 @@ public class ViewBaseGenerator : ISourceGenerator
 
     public void Initialize(GeneratorInitializationContext context)
     {
-    }
-
-    #endregion
-
-    #region Utilities
-
-    private static string? GetGlobalOption(GeneratorExecutionContext context, string name)
-    {
-        return context.AnalyzerConfigOptions.GlobalOptions.TryGetValue(
-            $"build_property.{nameof(ViewBaseGenerator)}_{name}",
-            out var result) &&
-            !string.IsNullOrWhiteSpace(result)
-            ? result
-            : null;
-    }
-
-    private static string? GetOption(
-        GeneratorExecutionContext context,
-        AdditionalText text,
-        string name)
-    {
-        return context.AnalyzerConfigOptions.GetOptions(text).TryGetValue(
-            $"build_metadata.AdditionalFiles.{nameof(ViewBaseGenerator)}_{name}",
-            out var result) &&
-            !string.IsNullOrWhiteSpace(result)
-            ? result
-            : null;
-    }
-
-    private static string GetRequiredGlobalOption(
-        GeneratorExecutionContext context,
-        string name)
-    {
-        return
-            GetGlobalOption(context, name) ??
-            throw new InvalidOperationException($"{name} is required.");
     }
 
     #endregion
