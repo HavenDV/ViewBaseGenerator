@@ -6,6 +6,20 @@ public class GeneratorBase
 {
     #region Methods
 
+    protected static void ReportException(GeneratorExecutionContext context, Exception exception)
+    {
+        context.ReportDiagnostic(
+            Diagnostic.Create(
+                new DiagnosticDescriptor(
+                    "VBG0001",
+                    "Exception: ",
+                    $"{exception}",
+                    "Usage",
+                    DiagnosticSeverity.Error,
+                    true),
+                Location.None));
+    }
+
     protected static string? GetGlobalOption(GeneratorExecutionContext context, string name)
     {
         return context.AnalyzerConfigOptions.GlobalOptions.TryGetValue(

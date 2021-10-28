@@ -35,16 +35,7 @@ public class ViewBaseGenerator : GeneratorBase, ISourceGenerator
         }
         catch (Exception exception)
         {
-            context.ReportDiagnostic(
-                Diagnostic.Create(
-                    new DiagnosticDescriptor(
-                        "VBG0001",
-                        "Exception: ",
-                        $"{exception}",
-                        "Usage",
-                        DiagnosticSeverity.Error,
-                        true),
-                    Location.None));
+            ReportException(context, exception);
         }
     }
 
