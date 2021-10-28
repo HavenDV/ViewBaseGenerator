@@ -6,13 +6,17 @@ public static class ConstructorCodeGenerator
 
     public static string GenerateConstructors(
         string @namespace,
-        IReadOnlyCollection<Constructor> classes)
+        IReadOnlyCollection<Constructor> constructors)
     {
-        return @$"
+        var usingReactiveUI = constructors.Any(x => x.SetReactiveUIDataContext);
+
+        return @$"{(usingReactiveUI ? @"
+using ReactiveUI;" : string.Empty)}
+
 namespace {@namespace}
 {{
 {
-string.Join(Environment.NewLine, classes.Select(GenerateConstructor))
+string.Join(Environment.NewLine, constructors.Select(GenerateConstructor))
 }
 }}
 ";
@@ -21,7 +25,7 @@ string.Join(Environment.NewLine, classes.Select(GenerateConstructor))
     public static string GenerateConstructor(
         Constructor constructor)
     {
-        var (modifier, name) = constructor;
+        var (modifier, name, setReactiveUIDataContext) = constructor;
 
         return @$"
     {modifier} partial class {name}
@@ -36,6 +40,11 @@ string.Join(Environment.NewLine, classes.Select(GenerateConstructor))
             InitializeComponent();
 
             AfterInitializeComponent();
+{(setReactiveUIDataContext ? @"
+            _ = this.WhenActivated(disposable =>
+            {
+                DataContext = ViewModel;
+            });" : string.Empty)}
         }}
 
     }}

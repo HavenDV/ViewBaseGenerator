@@ -25,7 +25,8 @@ public class ViewBaseGenerator : ISourceGenerator
                 .Where(text => GetOption(context, text, "GenerateConstructor") != null)
                 .Select(text => Constructor.FromPath(
                     text.Path,
-                    GetOption(context, text, "Modifier") ?? "public"))
+                    GetOption(context, text, "Modifier") ?? "public",
+                    Convert.ToBoolean(GetOption(context, text, "SetReactiveUIDataContext") ?? bool.FalseString)))
                 .ToArray();
 
             context.AddSource(
