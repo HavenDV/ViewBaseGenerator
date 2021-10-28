@@ -1,6 +1,6 @@
 ﻿namespace H.Generators;
 
-public static class ConstructorCodeGenerator
+public static class DefferedConstructorCodeGenerator
 {
     #region Methods
 
@@ -28,31 +28,19 @@ string.Join(Environment.NewLine, constructors.Select(GenerateConstructor))
     public static string GenerateConstructor(
         Constructor constructor)
     {
-        var (modifier, name, deffer, setRx) = constructor;
+        var (modifier, name, _, setRx) = constructor;
 
         return @$"
     {modifier} partial class {name}
     {{
-        partial void BeforeInitializeComponent();
-        partial void AfterInitializeComponent();
+        public void InitializeComponentDeffered()
+        {{
+             InitializeComponent();
+        }}
 
 {(setRx ? @"
-        partial void AfterWhenActivated(CompositeDisposable disposables);" : string.Empty)}
-
-{(deffer ? @"
-        partial void InitializeComponentDeffered();" : string.Empty)}
-{(deffer && setRx ? @"
-        partial void WhenActivatedDeffered();" : string.Empty)}
-
-        public {name}()
-        {{
-            BeforeInitializeComponent();
-{(deffer ? @"
-            InitializeComponent();" : @"
-            InitializeComponentDeffered();")}
-
-            AfterInitializeComponent();
-{(setRx && !deffer ? @"
+        public void WhenActivatedDeffered()
+        {
             _ = this.WhenActivated(disposables =>
             {
                 DataContext = ViewModel;
@@ -63,11 +51,8 @@ string.Join(Environment.NewLine, constructors.Select(GenerateConstructor))
                 }
 
                 AfterWhenActivated(disposables);
-            });" :
-setRx && deffer ? @"
-            WhenActivatedDeffered();" : string.Empty)}
-        }}
-
+            });
+        }" : string.Empty)}
     }}
 ";
     }

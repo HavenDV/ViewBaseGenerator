@@ -26,6 +26,15 @@ public class ViewBaseGenerator : ISourceGenerator
                 .Select(text => Constructor.FromPath(
                     text.Path,
                     GetOption(context, text, "Modifier") ?? "public",
+                    Convert.ToBoolean(GetOption(context, text, "IsDeffered") ?? bool.FalseString),
+                    Convert.ToBoolean(GetOption(context, text, "SetReactiveUIDataContext") ?? bool.FalseString)))
+                .ToArray();
+            var defferedConstructors = context.AdditionalFiles
+                .Where(text => GetOption(context, text, "GenerateDefferedConstructor") != null)
+                .Select(text => Constructor.FromPath(
+                    text.Path,
+                    GetOption(context, text, "Modifier") ?? "public",
+                    false,
                     Convert.ToBoolean(GetOption(context, text, "SetReactiveUIDataContext") ?? bool.FalseString)))
                 .ToArray();
 
@@ -40,6 +49,13 @@ public class ViewBaseGenerator : ISourceGenerator
                 "Constructors",
                 SourceText.From(
                     ConstructorCodeGenerator.GenerateConstructors(
+                        GetRequiredGlobalOption(context, "Namespace"),
+                        constructors),
+                    Encoding.UTF8));
+            context.AddSource(
+                "DefferedConstructors",
+                SourceText.From(
+                    DefferedConstructorCodeGenerator.GenerateConstructors(
                         GetRequiredGlobalOption(context, "Namespace"),
                         constructors),
                     Encoding.UTF8));
