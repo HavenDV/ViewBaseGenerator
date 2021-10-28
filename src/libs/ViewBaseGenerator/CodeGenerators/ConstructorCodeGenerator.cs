@@ -48,8 +48,8 @@ string.Join(Environment.NewLine, constructors.Select(GenerateConstructor))
         {{
             BeforeInitializeComponent();
 {(deffer ? @"
-            InitializeComponent();" : @"
-            InitializeComponentDeffered();")}
+            InitializeComponentDeffered();" : @"
+            InitializeComponent();")}
 
             AfterInitializeComponent();
 {(setRx && !deffer ? @"
