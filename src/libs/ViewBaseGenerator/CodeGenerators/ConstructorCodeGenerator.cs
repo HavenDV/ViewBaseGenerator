@@ -33,7 +33,7 @@ string.Join(Environment.NewLine, constructors.Select(GenerateConstructor))
         partial void BeforeInitializeComponent();
         partial void AfterInitializeComponent();
 
-        public FileView()
+        public {name}()
         {{
             BeforeInitializeComponent();
 
