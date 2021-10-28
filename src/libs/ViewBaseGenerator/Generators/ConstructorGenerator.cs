@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace H.Generators;
 
 [Generator]
-public class ViewBaseGenerator : GeneratorBase, ISourceGenerator
+public class ConstructorGenerator : GeneratorBase, ISourceGenerator
 {
     #region Methods
 
@@ -13,23 +13,23 @@ public class ViewBaseGenerator : GeneratorBase, ISourceGenerator
     {
         try
         {
-            var viewBases = context.AdditionalFiles
-                .Where(text => GetOption(context, text, "BaseClass") != null)
-                .Select(text => ViewBase.FromPath(
+            var constructors = context.AdditionalFiles
+                .Where(text => GetOption(context, text, "GenerateConstructor") != null)
+                .Select(text => Constructor.FromPath(
                     text.Path,
                     GetOption(context, text, "Modifier") ?? "public",
-                    GetOption(context, text, "BaseClass") ?? string.Empty,
-                    GetOption(context, text, "ViewModelNamespace") ?? string.Empty))
+                    Convert.ToBoolean(GetOption(context, text, "IsDeffered") ?? bool.FalseString),
+                    Convert.ToBoolean(GetOption(context, text, "SetReactiveUIDataContext") ?? bool.FalseString)))
                 .ToArray();
 
-            if (viewBases.Any())
+            if (constructors.Any())
             {
                 context.AddSource(
-                    "ViewBase",
+                    "Constructors",
                     SourceText.From(
-                        ViewBaseCodeGenerator.GenerateViewBases(
+                        ConstructorCodeGenerator.GenerateConstructors(
                             GetRequiredGlobalOption(context, "Namespace"),
-                            viewBases),
+                            constructors),
                         Encoding.UTF8));
             }
         }
