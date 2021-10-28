@@ -1,10 +1,21 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+using System.Text;
 
 namespace H.Generators;
 
 public class GeneratorBase
 {
     #region Methods
+
+    protected static void AddSource(GeneratorExecutionContext context, string hintName, string text)
+    {
+        context.AddSource(
+            hintName,
+            SourceText.From(
+                text,
+                Encoding.UTF8));
+    }
 
     protected static void ReportException(GeneratorExecutionContext context, Exception exception)
     {
