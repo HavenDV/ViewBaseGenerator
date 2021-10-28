@@ -57,7 +57,7 @@ public class ViewBaseGenerator : ISourceGenerator
                 SourceText.From(
                     DefferedConstructorCodeGenerator.GenerateConstructors(
                         GetRequiredGlobalOption(context, "Namespace"),
-                        constructors),
+                        defferedConstructors),
                     Encoding.UTF8));
         }
         catch (Exception exception)
