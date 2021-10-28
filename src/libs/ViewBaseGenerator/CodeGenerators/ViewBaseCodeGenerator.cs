@@ -12,7 +12,7 @@ public static class ViewBaseCodeGenerator
 namespace {@namespace}
 {{
 {
-string.Join(Environment.NewLine, classes.Select(GenerateViewBase))
+string.Join("\n", classes.Select(GenerateViewBase))
 }
 }}
 ";

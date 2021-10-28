@@ -19,7 +19,7 @@ using System.Reactive.Disposables;" : string.Empty)}
 namespace {@namespace}
 {{
 {
-string.Join(Environment.NewLine, constructors.Select(GenerateConstructor))
+string.Join("\n", constructors.Select(GenerateConstructor))
 }
 }}
 ";
