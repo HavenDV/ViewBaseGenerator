@@ -1,11 +1,9 @@
-﻿using System.Text;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+﻿using Microsoft.CodeAnalysis;
 
 namespace H.Generators;
 
 [Generator]
-public class DefferedConstructorGenerator : GeneratorBase, ISourceGenerator
+public class DefferedConstructorGenerator : ISourceGenerator
 {
     #region Methods
 
@@ -14,28 +12,26 @@ public class DefferedConstructorGenerator : GeneratorBase, ISourceGenerator
         try
         {
             var defferedConstructors = context.AdditionalFiles
-                .Where(text => GetOption(context, text, "GenerateDefferedConstructor") != null)
+                .Where(text => context.GetOption(text, "GenerateDefferedConstructor") != null)
                 .Select(text => Constructor.FromPath(
                     text.Path,
-                    GetOption(context, text, "Modifier") ?? "public",
+                    context.GetOption(text, "Modifier") ?? "public",
                     false,
-                    Convert.ToBoolean(GetOption(context, text, "SetReactiveUIDataContext") ?? bool.FalseString)))
+                    Convert.ToBoolean(context.GetOption(text, "SetReactiveUIDataContext") ?? bool.FalseString)))
                 .ToArray();
 
             if (defferedConstructors.Any())
             {
-                context.AddSource(
+                context.AddTextSource(
                     "DefferedConstructors",
-                    SourceText.From(
-                        DefferedConstructorCodeGenerator.GenerateConstructors(
-                            GetRequiredGlobalOption(context, "Namespace"),
-                            defferedConstructors),
-                        Encoding.UTF8));
+                    DefferedConstructorCodeGenerator.GenerateConstructors(
+                        context.GetRequiredGlobalOption("Namespace"),
+                        defferedConstructors));
             }
         }
         catch (Exception exception)
         {
-            ReportException(context, exception);
+            context.ReportException(exception);
         }
     }
 

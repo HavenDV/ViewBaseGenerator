@@ -4,11 +4,21 @@ using System.Text;
 
 namespace H.Generators;
 
-public class GeneratorBase
+public static class GeneratorExtensions
 {
+    #region Constants
+
+    public const string Name = nameof(ViewBaseGenerator);
+    public const string Id = "VBG";
+
+    #endregion
+
     #region Methods
 
-    protected static void AddSource(GeneratorExecutionContext context, string hintName, string text)
+    public static void AddTextSource(
+        this GeneratorExecutionContext context,
+        string hintName,
+        string text)
     {
         context.AddSource(
             hintName,
@@ -17,12 +27,14 @@ public class GeneratorBase
                 Encoding.UTF8));
     }
 
-    protected static void ReportException(GeneratorExecutionContext context, Exception exception)
+    public static void ReportException(
+        this GeneratorExecutionContext context,
+        Exception exception)
     {
         context.ReportDiagnostic(
             Diagnostic.Create(
                 new DiagnosticDescriptor(
-                    "VBG0001",
+                    $"{Id}0001",
                     "Exception: ",
                     $"{exception}",
                     "Usage",
@@ -31,31 +43,33 @@ public class GeneratorBase
                 Location.None));
     }
 
-    protected static string? GetGlobalOption(GeneratorExecutionContext context, string name)
+    public static string? GetGlobalOption(
+        this GeneratorExecutionContext context,
+        string name)
     {
         return context.AnalyzerConfigOptions.GlobalOptions.TryGetValue(
-            $"build_property.{nameof(ViewBaseGenerator)}_{name}",
+            $"build_property.{Name}_{name}",
             out var result) &&
             !string.IsNullOrWhiteSpace(result)
             ? result
             : null;
     }
 
-    protected static string? GetOption(
-        GeneratorExecutionContext context,
+    public static string? GetOption(
+        this GeneratorExecutionContext context,
         AdditionalText text,
         string name)
     {
         return context.AnalyzerConfigOptions.GetOptions(text).TryGetValue(
-            $"build_metadata.AdditionalFiles.{nameof(ViewBaseGenerator)}_{name}",
+            $"build_metadata.AdditionalFiles.{Name}_{name}",
             out var result) &&
             !string.IsNullOrWhiteSpace(result)
             ? result
             : null;
     }
 
-    protected static string GetRequiredGlobalOption(
-        GeneratorExecutionContext context,
+    public static string GetRequiredGlobalOption(
+        this GeneratorExecutionContext context,
         string name)
     {
         return

@@ -1,11 +1,9 @@
-﻿using System.Text;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+﻿using Microsoft.CodeAnalysis;
 
 namespace H.Generators;
 
 [Generator]
-public class ConstructorGenerator : GeneratorBase, ISourceGenerator
+public class ConstructorGenerator : ISourceGenerator
 {
     #region Methods
 
@@ -14,28 +12,26 @@ public class ConstructorGenerator : GeneratorBase, ISourceGenerator
         try
         {
             var constructors = context.AdditionalFiles
-                .Where(text => GetOption(context, text, "GenerateConstructor") != null)
+                .Where(text => context.GetOption(text, "GenerateConstructor") != null)
                 .Select(text => Constructor.FromPath(
                     text.Path,
-                    GetOption(context, text, "Modifier") ?? "public",
-                    Convert.ToBoolean(GetOption(context, text, "IsDeffered") ?? bool.FalseString),
-                    Convert.ToBoolean(GetOption(context, text, "SetReactiveUIDataContext") ?? bool.FalseString)))
+                    context.GetOption(text, "Modifier") ?? "public",
+                    Convert.ToBoolean(context.GetOption(text, "IsDeffered") ?? bool.FalseString),
+                    Convert.ToBoolean(context.GetOption(text, "SetReactiveUIDataContext") ?? bool.FalseString)))
                 .ToArray();
 
             if (constructors.Any())
             {
-                context.AddSource(
+                context.AddTextSource(
                     "Constructors",
-                    SourceText.From(
-                        ConstructorCodeGenerator.GenerateConstructors(
-                            GetRequiredGlobalOption(context, "Namespace"),
-                            constructors),
-                        Encoding.UTF8));
+                    ConstructorCodeGenerator.GenerateConstructors(
+                        context.GetRequiredGlobalOption("Namespace"),
+                        constructors));
             }
         }
         catch (Exception exception)
         {
-            ReportException(context, exception);
+            context.ReportException(exception);
         }
     }
 
