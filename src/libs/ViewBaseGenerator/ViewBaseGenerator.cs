@@ -13,7 +13,7 @@ public class ViewBaseGenerator : ISourceGenerator
     {
         try
         {
-            var classes = context.AdditionalFiles
+            var viewBases = context.AdditionalFiles
                 .Where(text => GetOption(context, text, "BaseClass") != null)
                 .Select(text => ViewBaseClass.FromPath(
                     text.Path,
@@ -38,14 +38,14 @@ public class ViewBaseGenerator : ISourceGenerator
                     Convert.ToBoolean(GetOption(context, text, "SetReactiveUIDataContext") ?? bool.FalseString)))
                 .ToArray();
 
-            if (classes.Any())
+            if (viewBases.Any())
             {
                 context.AddSource(
                     "ViewBase",
                     SourceText.From(
-                        CodeGenerator.GenerateViewBaseClasses(
+                        ViewBaseCodeGenerator.GenerateViewBases(
                             GetRequiredGlobalOption(context, "Namespace"),
-                            classes),
+                            viewBases),
                         Encoding.UTF8));
             }
             if (constructors.Any())

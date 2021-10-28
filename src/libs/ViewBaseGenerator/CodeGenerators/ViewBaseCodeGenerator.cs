@@ -1,10 +1,10 @@
 ﻿namespace H.Generators;
 
-public static class CodeGenerator
+public static class ViewBaseCodeGenerator
 {
     #region Methods
 
-    public static string GenerateViewBaseClasses(
+    public static string GenerateViewBases(
         string @namespace,
         IReadOnlyCollection<ViewBaseClass> classes)
     {
@@ -12,13 +12,13 @@ public static class CodeGenerator
 namespace {@namespace}
 {{
 {
-string.Join(Environment.NewLine, classes.Select(GenerateViewBaseClass))
+string.Join(Environment.NewLine, classes.Select(GenerateViewBase))
 }
 }}
 ";
     }
 
-    public static string GenerateViewBaseClass(
+    public static string GenerateViewBase(
         ViewBaseClass @class)
     {
         var (modifier, name, @base, viewModel) = @class;
