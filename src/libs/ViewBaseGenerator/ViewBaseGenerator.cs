@@ -15,7 +15,7 @@ public class ViewBaseGenerator : ISourceGenerator
         {
             var viewBases = context.AdditionalFiles
                 .Where(text => GetOption(context, text, "BaseClass") != null)
-                .Select(text => ViewBaseClass.FromPath(
+                .Select(text => ViewBase.FromPath(
                     text.Path,
                     GetOption(context, text, "Modifier") ?? "public",
                     GetOption(context, text, "BaseClass") ?? string.Empty,

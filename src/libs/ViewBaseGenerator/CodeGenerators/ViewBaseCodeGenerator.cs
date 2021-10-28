@@ -6,7 +6,7 @@ public static class ViewBaseCodeGenerator
 
     public static string GenerateViewBases(
         string @namespace,
-        IReadOnlyCollection<ViewBaseClass> classes)
+        IReadOnlyCollection<ViewBase> classes)
     {
         return @$"
 namespace {@namespace}
@@ -19,7 +19,7 @@ string.Join(Environment.NewLine, classes.Select(GenerateViewBase))
     }
 
     public static string GenerateViewBase(
-        ViewBaseClass @class)
+        ViewBase @class)
     {
         var (modifier, name, @base, viewModel) = @class;
 

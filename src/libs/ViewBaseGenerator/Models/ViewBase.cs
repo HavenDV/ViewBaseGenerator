@@ -1,12 +1,12 @@
 ﻿namespace H.Generators;
 
-public readonly record struct ViewBaseClass(
+public readonly record struct ViewBase(
     string Modifier,
     string Name,
     string BaseClass,
     string ViewModel)
 {
-    public static ViewBaseClass FromPath(
+    public static ViewBase FromPath(
         string path,
         string modifier,
         string baseClass,
@@ -18,6 +18,6 @@ public readonly record struct ViewBaseClass(
         var viewBaseName = viewName.Replace("View", "ViewBase");
         var viewModelName = $"{viewModelNamespace}.{viewName.Replace("View", "ViewModel")}";
 
-        return new ViewBaseClass(modifier, viewBaseName, baseClass, viewModelName);
+        return new ViewBase(modifier, viewBaseName, baseClass, viewModelName);
     }
 }
