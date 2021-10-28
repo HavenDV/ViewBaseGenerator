@@ -38,27 +38,36 @@ public class ViewBaseGenerator : ISourceGenerator
                     Convert.ToBoolean(GetOption(context, text, "SetReactiveUIDataContext") ?? bool.FalseString)))
                 .ToArray();
 
-            context.AddSource(
-                "ViewBase",
-                SourceText.From(
-                    CodeGenerator.GenerateViewBaseClasses(
-                        GetRequiredGlobalOption(context, "Namespace"),
-                        classes),
-                    Encoding.UTF8));
-            context.AddSource(
-                "Constructors",
-                SourceText.From(
-                    ConstructorCodeGenerator.GenerateConstructors(
-                        GetRequiredGlobalOption(context, "Namespace"),
-                        constructors),
-                    Encoding.UTF8));
-            context.AddSource(
-                "DefferedConstructors",
-                SourceText.From(
-                    DefferedConstructorCodeGenerator.GenerateConstructors(
-                        GetRequiredGlobalOption(context, "Namespace"),
-                        defferedConstructors),
-                    Encoding.UTF8));
+            if (classes.Any())
+            {
+                context.AddSource(
+                    "ViewBase",
+                    SourceText.From(
+                        CodeGenerator.GenerateViewBaseClasses(
+                            GetRequiredGlobalOption(context, "Namespace"),
+                            classes),
+                        Encoding.UTF8));
+            }
+            if (constructors.Any())
+            {
+                context.AddSource(
+                    "Constructors",
+                    SourceText.From(
+                        ConstructorCodeGenerator.GenerateConstructors(
+                            GetRequiredGlobalOption(context, "Namespace"),
+                            constructors),
+                        Encoding.UTF8));
+            }
+            if (defferedConstructors.Any())
+            {
+                context.AddSource(
+                    "DefferedConstructors",
+                    SourceText.From(
+                        DefferedConstructorCodeGenerator.GenerateConstructors(
+                            GetRequiredGlobalOption(context, "Namespace"),
+                            defferedConstructors),
+                        Encoding.UTF8));
+            }
         }
         catch (Exception exception)
         {
