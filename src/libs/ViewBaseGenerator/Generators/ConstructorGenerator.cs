@@ -1,22 +1,43 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
+using System.Collections.Immutable;
 
 namespace H.Generators;
 
 [Generator]
-public class ConstructorGenerator : ISourceGenerator
+public class ConstructorGenerator : IIncrementalGenerator
 {
+    #region Constants
+
+    public const string Name = nameof(ViewBaseGenerator);
+    public const string Id = "VBG";
+
+    #endregion
+
     #region Methods
 
-    public void Execute(GeneratorExecutionContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        context.RegisterSourceOutput(
+            context.CompilationProvider
+                .Combine(context.AnalyzerConfigOptionsProvider)
+                .Combine(context.AdditionalTextsProvider.Collect()),
+            static (context, tuple) => Execute(tuple.Left.Right, tuple.Right, context));
+    }
+
+    private static void Execute(
+        AnalyzerConfigOptionsProvider options,
+        ImmutableArray<AdditionalText> additionalTexts,
+        SourceProductionContext context)
     {
         try
         {
-            var constructors = context.AdditionalFiles
-                .Where(text => context.GetOption(text, "GenerateConstructor") != null)
+            var constructors = additionalTexts
+                .Where(text => options.GetOption(text, $"{Name}_GenerateConstructor") != null)
                 .Select(text => Constructor.FromPath(
                     text.Path,
-                    context.GetOption(text, "Modifier") ?? "public",
-                    Convert.ToBoolean(context.GetOption(text, "SetReactiveUIDataContext") ?? bool.FalseString)))
+                    options.GetOption(text, $"{Name}_Modifier") ?? "public",
+                    Convert.ToBoolean(options.GetOption(text, $"{Name}_SetReactiveUIDataContext") ?? bool.FalseString)))
                 .ToArray();
 
             if (constructors.Any())
@@ -24,18 +45,14 @@ public class ConstructorGenerator : ISourceGenerator
                 context.AddTextSource(
                     "Constructors",
                     ConstructorCodeGenerator.GenerateConstructors(
-                        context.GetRequiredGlobalOption("Namespace"),
+                        options.GetRequiredGlobalOption($"{Name}_Namespace"),
                         constructors));
             }
         }
         catch (Exception exception)
         {
-            context.ReportException(exception);
+            context.ReportException($"{Id}0001", exception);
         }
-    }
-
-    public void Initialize(GeneratorInitializationContext context)
-    {
     }
 
     #endregion

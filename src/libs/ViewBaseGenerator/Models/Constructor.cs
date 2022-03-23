@@ -1,6 +1,6 @@
 ﻿namespace H.Generators;
 
-public readonly record struct Constructor(
+internal readonly record struct Constructor(
     string Modifier,
     string Name,
     bool SetReactiveUIDataContext)
@@ -10,8 +10,6 @@ public readonly record struct Constructor(
         string modifier,
         bool setReactiveUIDataContext)
     {
-        path = path ?? throw new ArgumentNullException(nameof(path));
-
         var viewName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
 
         return new Constructor(modifier, viewName, setReactiveUIDataContext);

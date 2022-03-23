@@ -1,6 +1,6 @@
 ﻿namespace H.Generators;
 
-public readonly record struct ViewBase(
+internal readonly record struct ViewBase(
     string Modifier,
     string Name,
     string BaseClass,
@@ -12,8 +12,6 @@ public readonly record struct ViewBase(
         string baseClass,
         string viewModelNamespace)
     {
-        path = path ?? throw new ArgumentNullException(nameof(path));
-
         var viewName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
         var viewBaseName = viewName.Replace("View", "ViewBase");
         var viewModelName = $"{viewModelNamespace}.{viewName.Replace("View", "ViewModel")}";

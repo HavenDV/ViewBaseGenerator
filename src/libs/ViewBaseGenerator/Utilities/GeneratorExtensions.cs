@@ -1,40 +1,36 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using System.Text;
 
 namespace H.Generators;
 
-public static class GeneratorExtensions
+internal static class GeneratorExtensions
 {
-    #region Constants
-
-    public const string Name = nameof(ViewBaseGenerator);
-    public const string Id = "VBG";
-
-    #endregion
-
     #region Methods
 
     public static void AddTextSource(
-        this GeneratorExecutionContext context,
+        this SourceProductionContext context,
         string hintName,
-        string text)
+        string text,
+        Encoding? encoding = null)
     {
         context.AddSource(
             hintName,
             SourceText.From(
                 text,
-                Encoding.UTF8));
+                encoding ?? Encoding.UTF8));
     }
 
     public static void ReportException(
-        this GeneratorExecutionContext context,
+        this SourceProductionContext context,
+        string id,
         Exception exception)
     {
         context.ReportDiagnostic(
             Diagnostic.Create(
                 new DiagnosticDescriptor(
-                    $"{Id}0001",
+                    id,
                     "Exception: ",
                     $"{exception}",
                     "Usage",
@@ -44,11 +40,11 @@ public static class GeneratorExtensions
     }
 
     public static string? GetGlobalOption(
-        this GeneratorExecutionContext context,
+        this AnalyzerConfigOptionsProvider provider,
         string name)
     {
-        return context.AnalyzerConfigOptions.GlobalOptions.TryGetValue(
-            $"build_property.{Name}_{name}",
+        return provider.GlobalOptions.TryGetValue(
+            $"build_property.{name}",
             out var result) &&
             !string.IsNullOrWhiteSpace(result)
             ? result
@@ -56,12 +52,12 @@ public static class GeneratorExtensions
     }
 
     public static string? GetOption(
-        this GeneratorExecutionContext context,
+        this AnalyzerConfigOptionsProvider provider,
         AdditionalText text,
         string name)
     {
-        return context.AnalyzerConfigOptions.GetOptions(text).TryGetValue(
-            $"build_metadata.AdditionalFiles.{Name}_{name}",
+        return provider.GetOptions(text).TryGetValue(
+            $"build_metadata.AdditionalFiles.{name}",
             out var result) &&
             !string.IsNullOrWhiteSpace(result)
             ? result
@@ -69,11 +65,11 @@ public static class GeneratorExtensions
     }
 
     public static string GetRequiredGlobalOption(
-        this GeneratorExecutionContext context,
+        this AnalyzerConfigOptionsProvider provider,
         string name)
     {
         return
-            GetGlobalOption(context, name) ??
+            provider.GetGlobalOption(name) ??
             throw new InvalidOperationException($"{name} is required.");
     }
 

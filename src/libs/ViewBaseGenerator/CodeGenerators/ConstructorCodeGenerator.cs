@@ -1,6 +1,6 @@
 ﻿namespace H.Generators;
 
-public static class ConstructorCodeGenerator
+internal static class ConstructorCodeGenerator
 {
     #region Methods
 

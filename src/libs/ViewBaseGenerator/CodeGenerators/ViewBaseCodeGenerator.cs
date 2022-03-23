@@ -1,6 +1,6 @@
 ﻿namespace H.Generators;
 
-public static class ViewBaseCodeGenerator
+internal static class ViewBaseCodeGenerator
 {
     #region Methods
 
