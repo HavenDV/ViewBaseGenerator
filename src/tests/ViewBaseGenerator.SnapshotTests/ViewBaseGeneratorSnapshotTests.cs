@@ -6,8 +6,9 @@ public class ViewBaseGeneratorSnapshotTests : VerifyBase
     [TestMethod]
     public Task GeneratesWithoutFilesCorrectly()
     {
-        return this.CheckSource(
-            new CustomAnalyzerConfigOptionsProvider());
+        return this.CheckSourceAsync(
+            new CustomAnalyzerConfigOptionsProvider(),
+            Array.Empty<CustomAdditionalText>());
     }
 
     [TestMethod]
@@ -19,9 +20,9 @@ public class ViewBaseGeneratorSnapshotTests : VerifyBase
                 { "TestView.xaml.cs", new() },
             });
 
-        return this.CheckSource(
+        return this.CheckSourceAsync(
             options,
-            new CustomAdditionalText("TestView.xaml.cs", ""));
+            new[] { new CustomAdditionalText("TestView.xaml.cs", "") });
     }
 
     [TestMethod]
@@ -44,8 +45,8 @@ public class ViewBaseGeneratorSnapshotTests : VerifyBase
                 },
             });
 
-        return this.CheckSource(
+        return this.CheckSourceAsync(
             options,
-            new CustomAdditionalText("TestView.xaml.cs", ""));
+            new[] { new CustomAdditionalText("TestView.xaml.cs", "") });
     }
 }

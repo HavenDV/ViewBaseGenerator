@@ -7,10 +7,11 @@ namespace H.Generators.IntegrationTests;
 
 public static class TestHelper
 {
-    public static async Task CheckSource(
+    public static async Task CheckSourceAsync(
         this VerifyBase verifier,
         AnalyzerConfigOptionsProvider options,
-        params AdditionalText[] texts)
+        AdditionalText[] additionalTexts,
+        CancellationToken cancellationToken = default)
     {
         var dotNetFolder = Path.GetDirectoryName(typeof(object).Assembly.Location) ?? string.Empty;
         var compilation = (Compilation)CSharpCompilation.Create(
@@ -20,24 +21,13 @@ public static class TestHelper
                 CSharpSyntaxTree.ParseText(@$"
 namespace ViewModels
 {{
-{string.Concat(texts.Select(text => $@"
+{string.Concat(additionalTexts.Select(text => $@"
     public class {text.Path.Replace("View", "ViewModel").Replace(".xaml.cs", string.Empty)}
     {{
     }}
 "))}
 }}
-"),
-                CSharpSyntaxTree.ParseText(@"
-namespace MyCode
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-        }
-    }
-}
-"),
+", cancellationToken: cancellationToken),
             },
             references: new[]
             {
@@ -45,20 +35,15 @@ namespace MyCode
                 MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Runtime.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Collections.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "netstandard.dll")),
-            });
+            },
+            options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
         var generator = new ViewBaseGenerator();
         var driver = CSharpGeneratorDriver
             .Create(generator)
-            .AddAdditionalTexts(ImmutableArray.Create(texts));
-        driver = driver
+            .AddAdditionalTexts(ImmutableArray.Create(additionalTexts))
             .WithUpdatedAnalyzerConfigOptions(options)
-            .RunGenerators(compilation);
-        
-        driver = driver.RunGeneratorsAndUpdateCompilation(
-            compilation,
-            out compilation,
-            out _);
-        var diagnostics = compilation.GetDiagnostics();
+            .RunGeneratorsAndUpdateCompilation(compilation, out compilation, out _, cancellationToken);
+        var diagnostics = compilation.GetDiagnostics(cancellationToken);
 
         await Task.WhenAll(
             verifier
