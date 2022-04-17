@@ -17,7 +17,7 @@ public class ViewBaseGeneratorSnapshotTests : VerifyBase
         var options = new CustomAnalyzerConfigOptionsProvider(
             additionalTextOptions: new Dictionary<string, Dictionary<string, string>>
             {
-                { "TestView.xaml.cs", new() },
+                ["TestView.xaml.cs"] = new(),
             });
 
         return this.CheckSourceAsync(
@@ -31,17 +31,14 @@ public class ViewBaseGeneratorSnapshotTests : VerifyBase
         var options = new CustomAnalyzerConfigOptionsProvider(
             globalOptions: new Dictionary<string, string>
             {
-                { "build_property.ViewBaseGenerator_Namespace", "Views" },
+                ["build_property.ViewBaseGenerator_Namespace"] = "Views",
             },
             additionalTextOptions: new Dictionary<string, Dictionary<string, string>>
             {
+                ["TestView.xaml.cs"] = new()
                 {
-                    "TestView.xaml.cs",
-                    new Dictionary<string, string>
-                    {
-                        { "build_metadata.AdditionalFiles.ViewBaseGenerator_BaseClass", "global::System.Collections.Generic.List" },
-                        { "build_metadata.AdditionalFiles.ViewBaseGenerator_ViewModelNamespace", "ViewModels" },
-                    }
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_BaseClass"] = "global::System.Collections.Generic.List",
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_ViewModelNamespace"] = "ViewModels",
                 },
             });
 
