@@ -34,26 +34,29 @@ public class ViewBaseGenerator : IIncrementalGenerator
         try
         {
             var viewBases = additionalTexts
-                .Where(text => options.GetOption(text, $"{Name}_BaseClass") != null)
+                .Where(text => options.GetOption(text, "BaseClass", prefix: Name) != null)
                 .Select(text => ViewBase.FromPath(
                     text.Path,
-                    options.GetOption(text, $"{Name}_Modifier") ?? "public",
-                    options.GetOption(text, $"{Name}_BaseClass") ?? string.Empty,
-                    options.GetOption(text, $"{Name}_ViewModelNamespace") ?? string.Empty))
+                    options.GetOption(text, "Modifier", prefix: Name) ?? "public",
+                    options.GetOption(text, "BaseClass", prefix: Name) ?? string.Empty,
+                    options.GetOption(text, "ViewModelNamespace", prefix: Name) ?? string.Empty))
                 .ToArray();
 
             if (viewBases.Any())
             {
                 context.AddTextSource(
-                    "ViewBase",
-                    ViewBaseCodeGenerator.GenerateViewBases(
-                        options.GetRequiredGlobalOption($"{Name}_Namespace"),
+                    hintName: "ViewBase",
+                    text: ViewBaseCodeGenerator.GenerateViewBases(
+                        options.GetRequiredGlobalOption("Namespace", prefix: Name),
                         viewBases));
             }
         }
         catch (Exception exception)
         {
-            context.ReportException($"{Id}0001", exception);
+            context.ReportException(
+                id: "001",
+                exception: exception,
+                prefix: Id);
         }
     }
 

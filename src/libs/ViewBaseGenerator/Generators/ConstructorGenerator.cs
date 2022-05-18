@@ -34,25 +34,28 @@ public class ConstructorGenerator : IIncrementalGenerator
         try
         {
             var constructors = additionalTexts
-                .Where(text => options.GetOption(text, $"{Name}_GenerateConstructor") != null)
+                .Where(text => options.GetOption(text, "GenerateConstructor", prefix: Name) != null)
                 .Select(text => Constructor.FromPath(
                     text.Path,
-                    options.GetOption(text, $"{Name}_Modifier") ?? "public",
-                    Convert.ToBoolean(options.GetOption(text, $"{Name}_SetReactiveUIDataContext") ?? bool.FalseString)))
+                    options.GetOption(text, "Modifier", prefix: Name) ?? "public",
+                    Convert.ToBoolean(options.GetOption(text, "SetReactiveUIDataContext", prefix: Name) ?? bool.FalseString)))
                 .ToArray();
 
             if (constructors.Any())
             {
                 context.AddTextSource(
-                    "Constructors",
-                    ConstructorCodeGenerator.GenerateConstructors(
-                        options.GetRequiredGlobalOption($"{Name}_Namespace"),
+                    hintName: "Constructors",
+                    text: ConstructorCodeGenerator.GenerateConstructors(
+                        options.GetRequiredGlobalOption("Namespace", prefix: Name),
                         constructors));
             }
         }
         catch (Exception exception)
         {
-            context.ReportException($"{Id}0001", exception);
+            context.ReportException(
+                id: "001",
+                exception: exception,
+                prefix: Id);
         }
     }
 
