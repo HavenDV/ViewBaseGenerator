@@ -1,4 +1,6 @@
-﻿namespace H.Generators.IntegrationTests;
+﻿using Microsoft.CodeAnalysis;
+
+namespace H.Generators.IntegrationTests;
 
 [TestClass]
 public class ViewBaseGeneratorSnapshotTests : VerifyBase
@@ -7,14 +9,14 @@ public class ViewBaseGeneratorSnapshotTests : VerifyBase
     public Task GeneratesWithoutFilesCorrectly()
     {
         return this.CheckSourceAsync(
-            new CustomAnalyzerConfigOptionsProvider(),
-            Array.Empty<CustomAdditionalText>());
+            new DictionaryAnalyzerConfigOptionsProvider(),
+            Array.Empty<AdditionalText>());
     }
 
     [TestMethod]
     public Task GeneratesWithOneFileWithoutSettingsCorrectly()
     {
-        var options = new CustomAnalyzerConfigOptionsProvider(
+        var options = new DictionaryAnalyzerConfigOptionsProvider(
             additionalTextOptions: new Dictionary<string, Dictionary<string, string>>
             {
                 ["TestView.xaml.cs"] = new(),
@@ -22,13 +24,13 @@ public class ViewBaseGeneratorSnapshotTests : VerifyBase
 
         return this.CheckSourceAsync(
             options,
-            new[] { new CustomAdditionalText("TestView.xaml.cs", "") });
+            new AdditionalText[] { new MemoryAdditionalText("TestView.xaml.cs", "") });
     }
 
     [TestMethod]
     public Task GeneratesWithOneFileCorrectly()
     {
-        var options = new CustomAnalyzerConfigOptionsProvider(
+        var options = new DictionaryAnalyzerConfigOptionsProvider(
             globalOptions: new Dictionary<string, string>
             {
                 ["build_property.ViewBaseGenerator_Namespace"] = "Views",
@@ -44,6 +46,6 @@ public class ViewBaseGeneratorSnapshotTests : VerifyBase
 
         return this.CheckSourceAsync(
             options,
-            new[] { new CustomAdditionalText("TestView.xaml.cs", "") });
+            new AdditionalText[] { new MemoryAdditionalText("TestView.xaml.cs", "") });
     }
 }

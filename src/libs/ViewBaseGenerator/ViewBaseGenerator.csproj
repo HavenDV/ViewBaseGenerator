@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <NoWarn>$(NoWarn);NU5128;CA1014;CA1031;CA1720</NoWarn>
+    <NoWarn>$(NoWarn);NU5128;CA1031</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet">
@@ -21,7 +21,7 @@ $(PACKAGE_RELEASE_NOTES)</Description>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.2.0" PrivateAssets="all" />
-    <PackageReference Include="H.Generators.Extensions" Version="1.0.5" PrivateAssets="all" />
+    <PackageReference Include="H.Generators.Extensions" Version="1.0.8" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

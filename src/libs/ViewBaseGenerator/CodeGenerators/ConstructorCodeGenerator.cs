@@ -8,9 +8,9 @@ internal static class ConstructorCodeGenerator
         string @namespace,
         IReadOnlyCollection<Constructor> constructors)
     {
-        var usingReactiveUI = constructors.Any(x => x.SetReactiveUIDataContext);
+        var usingReactiveUi = constructors.Any(x => x.SetReactiveUiDataContext);
 
-        return @$"{(usingReactiveUI ? @"
+        return @$"{(usingReactiveUi ? @"
 using ReactiveUI;
 using System.Reactive.Disposables;" : string.Empty)}
 
