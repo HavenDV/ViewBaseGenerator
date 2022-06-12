@@ -1,9 +1,65 @@
-# [ViewBaseGenerator](https://github.com/HavenDV/ViewBaseGenerator/) 
+# ViewBaseGenerator
+The main purpose of the generator is to avoid boilerplate code in the code-behind views files, like this:
+```cs
+public abstract partial class PreviewDropViewBase
+: ReactiveUI.Uno.ReactiveUserControl<Ratbuddyssey.ViewModels.PreviewDropViewModel>
+{
+}
 
-[![Language](https://img.shields.io/badge/language-C%23-blue.svg?style=flat-square)](https://github.com/HavenDV/ViewBaseGenerator/search?l=C%23&o=desc&s=&type=Code) 
-[![License](https://img.shields.io/github/license/HavenDV/ViewBaseGenerator.svg?label=License&maxAge=86400)](LICENSE.md) 
-[![Requirements](https://img.shields.io/badge/Requirements-.NET%20Standard%202.0-blue.svg)](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md)
-[![Build Status](https://github.com/HavenDV/ViewBaseGenerator/workflows/.NET/badge.svg?branch=master)](https://github.com/HavenDV/ViewBaseGenerator/actions?query=workflow%3A%22.NET%22)
+public partial class MainView
+{
+    public MainView()
+    {
+        InitializeComponent();
+
+        _ = this.WhenActivated(disposables =>
+        {
+            DataContext = ViewModel;
+        });
+    }
+}
+```
+
+At the same time, the generator supports the ability to add your code anywhere through the definition of partial methods for special cases:
+```cs
+public partial class MainView
+{
+    partial void BeforeInitializeComponent();
+    partial void AfterInitializeComponent();
+
+    partial void AfterWhenActivated(CompositeDisposable disposables);
+
+    public MainView()
+    {
+        BeforeInitializeComponent();
+
+        InitializeComponent();
+
+        AfterInitializeComponent();
+
+        _ = this.WhenActivated(disposables =>
+        {
+            DataContext = ViewModel;
+
+            if (ViewModel == null)
+            {
+                return;
+            }
+
+            AfterWhenActivated(disposables);
+        });
+    }
+}
+```
+
+I also recommend not deleting .xaml.cs files, but leaving them empty like this:
+```cs
+namespace YourNamespace.Views;
+
+public partial class MainView
+{
+}
+```
 
 ## Nuget
 
@@ -13,18 +69,22 @@
 Install-Package ViewBaseGenerator
 ```
 
-### UWP
+### WPF/UWP/WinUI
 ```xml
   <PropertyGroup>
     <ViewBaseGenerator_Namespace>YourNamespace.Views</ViewBaseGenerator_Namespace>
-  </PropertyGroup>
+  </PropertyGroup
+
+  <ItemGroup Label="View Constructors">
+    <AdditionalFiles Include="Views\**\*.xaml" ViewBaseGenerator_GenerateConstructor="True" ViewBaseGenerator_SetReactiveUIDataContext="True" />
+  </ItemGroup>
 
   <ItemGroup Label="ViewBase">
-    <AdditionalFiles Include="..\..\shared\YourNamespace.Shared\Views\**\*.xaml.cs" ViewBaseGenerator_BaseClass="ReactiveUI.Uno.ReactiveUserControl" ViewBaseGenerator_ViewModelNamespace="YourNamespace.ViewModels" Visible="False" />
+    <AdditionalFiles Include="Views\**\*.xaml.cs" ViewBaseGenerator_BaseClass="ReactiveUI.Uno.ReactiveUserControl" ViewBaseGenerator_ViewModelNamespace="YourNamespace.ViewModels" />
   </ItemGroup>
 ```
 
-### Uno (projects besides UWP)
+### Uno (projects besides UWP/WinUI)
 Uno uses Source Generators and there is currently no way to use the output of one generator in another. 
 Therefore, the solution is somewhat more complicated:
 1. Create new project like this:
