@@ -84,6 +84,18 @@ Install-Package ViewBaseGenerator
   </ItemGroup>
 ```
 
+Although ReactiveUI is supported, you can also use the generator without it, 
+just to get rid of the `InitializeComponent()` constructors. In this case, you need code like:
+```xml
+  <PropertyGroup>
+    <ViewBaseGenerator_Namespace>YourNamespace.Views</ViewBaseGenerator_Namespace>
+  </PropertyGroup
+
+  <ItemGroup Label="View Constructors">
+    <AdditionalFiles Include="Views\**\*.xaml" ViewBaseGenerator_GenerateConstructor="True" />
+  </ItemGroup>
+```
+
 ### Uno (projects besides UWP/WinUI)
 Uno uses Source Generators and there is currently no way to use the output of one generator in another. 
 Therefore, the solution is somewhat more complicated:
