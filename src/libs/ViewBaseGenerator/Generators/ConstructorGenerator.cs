@@ -41,13 +41,13 @@ public class ConstructorGenerator : IIncrementalGenerator
                     Convert.ToBoolean(options.GetOption(text, "SetReactiveUIDataContext", prefix: Name) ?? bool.FalseString)))
                 .ToArray();
 
-            if (constructors.Any())
+            foreach (var constructor in constructors)
             {
                 context.AddTextSource(
-                    hintName: "Constructors",
-                    text: ConstructorCodeGenerator.GenerateConstructors(
+                    hintName: $"{constructor.Name}.Constructors.generated.cs",
+                    text: ConstructorCodeGenerator.GenerateConstructor(
                         options.GetRequiredGlobalOption("Namespace", prefix: Name),
-                        constructors));
+                        constructor));
             }
         }
         catch (Exception exception)

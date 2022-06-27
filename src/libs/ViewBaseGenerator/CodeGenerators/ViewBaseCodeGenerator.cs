@@ -1,35 +1,25 @@
-﻿namespace H.Generators;
+﻿using H.Generators.Extensions;
+
+namespace H.Generators;
 
 internal static class ViewBaseCodeGenerator
 {
-    #region Methods
-
-    public static string GenerateViewBases(
-        string @namespace,
-        IReadOnlyCollection<ViewBase> classes)
-    {
-        return @$"
-namespace {@namespace}
-{{
-{
-string.Join("\n", classes.Select(GenerateViewBase))
-}
-}}
-";
-    }
-
     public static string GenerateViewBase(
+        string @namespace,
         ViewBase @class)
     {
         var (modifier, name, @base, viewModel) = @class;
 
         return @$"
+#nullable enable
+
+namespace {@namespace}
+{{
     {modifier} abstract partial class {name}
-    : {@base}<{viewModel}>
+    : {@base}<{viewModel.WithGlobalPrefix()}>
     {{
     }}
+}}
 ";
     }
-
-    #endregion
 }

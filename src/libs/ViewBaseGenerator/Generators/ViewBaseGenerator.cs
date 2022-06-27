@@ -42,13 +42,13 @@ public class ViewBaseGenerator : IIncrementalGenerator
                     options.GetOption(text, "ViewModelNamespace", prefix: Name) ?? string.Empty))
                 .ToArray();
 
-            if (viewBases.Any())
+            foreach (var viewBase in viewBases)
             {
                 context.AddTextSource(
-                    hintName: "ViewBase",
-                    text: ViewBaseCodeGenerator.GenerateViewBases(
+                    hintName: $"{viewBase.Name}.ViewBase.generated.cs",
+                    text: ViewBaseCodeGenerator.GenerateViewBase(
                         options.GetRequiredGlobalOption("Namespace", prefix: Name),
-                        viewBases));
+                        viewBase));
             }
         }
         catch (Exception exception)

@@ -4,11 +4,12 @@ internal static class ConstructorCodeGenerator
 {
     #region Methods
 
-    public static string GenerateConstructors(
+    public static string GenerateConstructor(
         string @namespace,
-        IReadOnlyCollection<Constructor> constructors)
+        Constructor constructor)
     {
-        var usingReactiveUi = constructors.Any(x => x.SetReactiveUiDataContext);
+        var (modifier, name, setRx) = constructor;
+        var usingReactiveUi = constructor.SetReactiveUiDataContext;
 
         return @$"{(usingReactiveUi ? @"
 using ReactiveUI;
@@ -18,26 +19,13 @@ using System.Reactive.Disposables;" : string.Empty)}
 
 namespace {@namespace}
 {{
-{
-string.Join("\n", constructors.Select(GenerateConstructor))
-}
-}}
-";
-    }
-
-    public static string GenerateConstructor(
-        Constructor constructor)
-    {
-        var (modifier, name, setRx) = constructor;
-
-        return @$"
     {modifier} partial class {name}
     {{
         partial void BeforeInitializeComponent();
         partial void AfterInitializeComponent();
 
 {(setRx ? @"
-        partial void AfterWhenActivated(CompositeDisposable disposables);" : string.Empty)}
+        partial void AfterWhenActivated(global::System.Reactive.Disposables.CompositeDisposable disposables);" : string.Empty)}
 
         public {name}()
         {{
@@ -59,8 +47,8 @@ string.Join("\n", constructors.Select(GenerateConstructor))
                 AfterWhenActivated(disposables);
             });" : string.Empty)}
         }}
-
     }}
+}}
 ";
     }
 
