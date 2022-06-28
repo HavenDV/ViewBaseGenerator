@@ -38,6 +38,7 @@ public class ConstructorGenerator : IIncrementalGenerator
                 .Select(text => Constructor.FromPath(
                     text.Path,
                     options.GetOption(text, "Modifier", prefix: Name) ?? "public",
+                    Convert.ToBoolean(options.GetOption(text, "CreateReactiveUIWhenActivated", prefix: Name) ?? bool.FalseString),
                     Convert.ToBoolean(options.GetOption(text, "SetReactiveUIDataContext", prefix: Name) ?? bool.FalseString)))
                 .ToArray();
 

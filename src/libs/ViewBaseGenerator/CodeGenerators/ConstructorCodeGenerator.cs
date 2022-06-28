@@ -10,12 +10,11 @@ internal static class ConstructorCodeGenerator
         string @namespace,
         Constructor constructor)
     {
-        var (modifier, name, setRx) = constructor;
-        var usingReactiveUi = constructor.SetReactiveUiDataContext;
+        var (modifier, name, setDataContext, createWhenActivated) = constructor;
+        var setRx = setDataContext || createWhenActivated;
 
-        return @$"{(usingReactiveUi ? @"
+        return @$"{(setRx ? @"
 using ReactiveUI;
-using System.Reactive.Disposables;
 " : " ")}
  
 #nullable enable
@@ -36,18 +35,14 @@ namespace {@namespace}
             InitializeComponent();
 
             AfterInitializeComponent();
-{(setRx ? @"
+{(setRx ? @$"
             _ = this.WhenActivated(disposables =>
-            {
+            {{
+{(setDataContext ? @" 
                 DataContext = ViewModel;
-
-                if (ViewModel == null)
-                {
-                    return;
-                }
-
+" : " ")}
                 AfterWhenActivated(disposables);
-            });" : " ")}
+            }});" : " ")}
         }}
     }}
 }}
