@@ -35,11 +35,11 @@ public class ConstructorGenerator : IIncrementalGenerator
         {
             var constructors = additionalTexts
                 .Where(text => options.GetOption(text, "GenerateConstructor", prefix: Name) != null)
-                .Select(text => Constructor.FromPath(
-                    text.Path,
-                    options.GetOption(text, "Modifier", prefix: Name) ?? "public",
-                    Convert.ToBoolean(options.GetOption(text, "CreateReactiveUIWhenActivated", prefix: Name) ?? bool.FalseString),
-                    Convert.ToBoolean(options.GetOption(text, "SetReactiveUIDataContext", prefix: Name) ?? bool.FalseString)))
+                .Select(text => new Constructor(
+                    Modifier: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)),
+                    Name: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
+                    CreateReactiveUIWhenActivated: bool.Parse(options.GetOption(text, "CreateReactiveUIWhenActivated", prefix: Name) ?? bool.FalseString),
+                    SetReactiveUIDataContext: bool.Parse(options.GetOption(text, "SetReactiveUIDataContext", prefix: Name) ?? bool.FalseString)))
                 .ToArray();
 
             foreach (var constructor in constructors)

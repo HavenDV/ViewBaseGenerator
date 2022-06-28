@@ -10,7 +10,7 @@ internal static class ConstructorCodeGenerator
         string @namespace,
         Constructor constructor)
     {
-        var (modifier, name, setDataContext, createWhenActivated) = constructor;
+        var (modifier, name, createWhenActivated, setDataContext) = constructor;
         var setRx = setDataContext || createWhenActivated;
 
         return @$"{(setRx ? @"
