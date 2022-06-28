@@ -1,5 +1,4 @@
 ﻿//HintName: TestViewBase.ViewBase.generated.cs
-
 #nullable enable
 
 namespace Views

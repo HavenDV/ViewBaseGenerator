@@ -10,7 +10,7 @@ internal static class ViewBaseCodeGenerator
     {
         var (modifier, name, @base, viewModel) = @class;
 
-        return @$"
+        return @$" 
 #nullable enable
 
 namespace {@namespace}
@@ -20,6 +20,6 @@ namespace {@namespace}
     {{
     }}
 }}
-";
+ ".RemoveBlankLinesWhereOnlyWhitespaces();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace H.Generators;
+﻿using H.Generators.Extensions;
+
+namespace H.Generators;
 
 internal static class ConstructorCodeGenerator
 {
@@ -13,8 +15,9 @@ internal static class ConstructorCodeGenerator
 
         return @$"{(usingReactiveUi ? @"
 using ReactiveUI;
-using System.Reactive.Disposables;" : string.Empty)}
-
+using System.Reactive.Disposables;
+" : " ")}
+ 
 #nullable enable
 
 namespace {@namespace}
@@ -23,9 +26,8 @@ namespace {@namespace}
     {{
         partial void BeforeInitializeComponent();
         partial void AfterInitializeComponent();
-
 {(setRx ? @"
-        partial void AfterWhenActivated(global::System.Reactive.Disposables.CompositeDisposable disposables);" : string.Empty)}
+        partial void AfterWhenActivated(global::System.Reactive.Disposables.CompositeDisposable disposables);" : " ")}
 
         public {name}()
         {{
@@ -45,11 +47,11 @@ namespace {@namespace}
                 }
 
                 AfterWhenActivated(disposables);
-            });" : string.Empty)}
+            });" : " ")}
         }}
     }}
 }}
-";
+ ".RemoveBlankLinesWhereOnlyWhitespaces();
     }
 
     #endregion
