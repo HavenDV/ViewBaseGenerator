@@ -36,8 +36,8 @@ public class ConstructorGenerator : IIncrementalGenerator
             var constructors = additionalTexts
                 .Where(text => options.GetOption(text, "GenerateConstructor", prefix: Name) != null)
                 .Select(text => new Constructor(
-                    Modifier: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)),
-                    Name: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
+                    Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
+                    Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)),
                     CreateReactiveUIWhenActivated: bool.Parse(options.GetOption(text, "CreateReactiveUIWhenActivated", prefix: Name) ?? bool.FalseString),
                     SetReactiveUIDataContext: bool.Parse(options.GetOption(text, "SetReactiveUIDataContext", prefix: Name) ?? bool.FalseString)))
                 .ToArray();
