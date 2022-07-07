@@ -4,7 +4,7 @@ using H.Generators.Tests.Extensions;
 namespace H.Generators.IntegrationTests;
 
 [TestClass]
-public class Tests : VerifyBase
+public class ViewBaseTests : VerifyBase
 {
     [TestMethod]
     public Task GeneratesWithoutFilesCorrectly()
