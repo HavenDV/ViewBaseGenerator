@@ -4,12 +4,12 @@ using H.Generators.Tests.Extensions;
 namespace H.Generators.IntegrationTests;
 
 [TestClass]
-public class ViewBaseTests : VerifyBase
+public class ConstructorTests : VerifyBase
 {
     [TestMethod]
     public Task GeneratesWithoutFilesCorrectly()
     {
-        return this.CheckSourceAsync<ViewBaseGenerator>(
+        return this.CheckSourceAsync<ConstructorGenerator>(
             new DictionaryAnalyzerConfigOptionsProvider(),
             Array.Empty<AdditionalText>());
     }
@@ -23,7 +23,7 @@ public class ViewBaseTests : VerifyBase
                 ["TestView.xaml.cs"] = new(),
             });
 
-        return this.CheckSourceAsync<ViewBaseGenerator>(
+        return this.CheckSourceAsync<ConstructorGenerator>(
             options,
             new AdditionalText[] { new MemoryAdditionalText("TestView.xaml.cs", "") });
     }
@@ -40,12 +40,12 @@ public class ViewBaseTests : VerifyBase
             {
                 ["TestView.xaml.cs"] = new()
                 {
-                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_BaseClass"] = "global::System.Collections.Generic.List",
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateConstructor"] = "global::System.Collections.Generic.List",
                     ["build_metadata.AdditionalFiles.ViewBaseGenerator_ViewModelNamespace"] = "ViewModels",
                 },
             });
 
-        return this.CheckSourceAsync<ViewBaseGenerator>(
+        return this.CheckSourceAsync<ConstructorGenerator>(
             options,
             new AdditionalText[] { new MemoryAdditionalText("TestView.xaml.cs", "") });
     }

@@ -8,11 +8,11 @@ namespace H.Generators.IntegrationTests;
 
 public static class TestHelper
 {
-    public static async Task CheckSourceAsync(
+    public static async Task CheckSourceAsync<T>(
         this VerifyBase verifier,
         AnalyzerConfigOptionsProvider options,
         AdditionalText[] additionalTexts,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default) where T : IIncrementalGenerator, new()
     {
         var referenceAssemblies = ReferenceAssemblies.Net.Net60;
         var references = await referenceAssemblies.ResolveAsync(null, cancellationToken);
@@ -33,7 +33,7 @@ namespace ViewModels
             },
             references: references,
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-        var generator = new ViewBaseGenerator();
+        var generator = new T();
         var driver = CSharpGeneratorDriver
             .Create(generator)
             .AddAdditionalTexts(ImmutableArray.Create(additionalTexts))
