@@ -17,7 +17,7 @@ internal static class ConstructorCodeGenerator
         if (!string.IsNullOrWhiteSpace(constructor.BaseClass))
         {
             interfaces.Add(!constructor.BaseClass.Contains('.') && constructor.Platform.HasValue
-                ? GenerateTypeByPlatform(constructor.Platform.Value, constructor.BaseClass)
+                ? GenerateTypeByPlatform(constructor.Platform.Value, $"Controls.{constructor.BaseClass}")
                 : constructor.BaseClass.WithGlobalPrefix());
         }
         if (generateViewModelProperty)

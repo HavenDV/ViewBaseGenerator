@@ -9,7 +9,7 @@ internal static class ViewBaseCodeGenerator
         ViewBase viewBase)
     {
         var baseClass = !viewBase.BaseClass.Contains('.') && viewBase.Platform.HasValue
-            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, viewBase.BaseClass)
+            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, $"Controls.{viewBase.BaseClass}")
             : viewBase.BaseClass.WithGlobalPrefix();
 
         return @$" 
