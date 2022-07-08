@@ -6,17 +6,15 @@ internal static class ViewBaseCodeGenerator
 {
     public static string GenerateViewBase(
         string @namespace,
-        ViewBase @class)
+        ViewBase viewBase)
     {
-        var (modifier, name, @base, viewModel) = @class;
-
         return @$" 
 #nullable enable
 
 namespace {@namespace}
 {{
-    {modifier} abstract partial class {name}
-    : {@base}<{viewModel.WithGlobalPrefix()}>
+    {viewBase.Modifier} abstract partial class {viewBase.Name}
+    : {viewBase.BaseClass.WithGlobalPrefix()}<{viewBase.ViewModel.WithGlobalPrefix()}>
     {{
     }}
 }}
