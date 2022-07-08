@@ -41,7 +41,7 @@ public class ViewBaseTests : VerifyBase
                 ["TestView.xaml.cs"] = new()
                 {
                     ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateViewBase"] = "true",
-                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_BaseClass"] = "global::System.Collections.Generic.List",
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_BaseClass"] = "System.Collections.Generic.List",
                     ["build_metadata.AdditionalFiles.ViewBaseGenerator_ViewModelNamespace"] = "ViewModels",
                 },
             });
