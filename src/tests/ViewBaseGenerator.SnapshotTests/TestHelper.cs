@@ -14,7 +14,8 @@ public static class TestHelper
         AdditionalText[] additionalTexts,
         CancellationToken cancellationToken = default) where T : IIncrementalGenerator, new()
     {
-        var referenceAssemblies = ReferenceAssemblies.Net.Net60;
+        var referenceAssemblies = ReferenceAssemblies.NetFramework.Net48.Wpf
+            .WithPackages(ImmutableArray.Create(new PackageIdentity("ReactiveUI.WPF", "18.2.9")));
         var references = await referenceAssemblies.ResolveAsync(null, cancellationToken);
         var compilation = (Compilation)CSharpCompilation.Create(
             assemblyName: "Tests",

@@ -2,6 +2,9 @@
 
   <ItemGroup>
     <CompilerVisibleProperty Include="ViewBaseGenerator_Namespace"/>
+    <CompilerVisibleProperty Include="ViewBaseGenerator_DefineConstants"/>
+    <CompilerVisibleProperty Include="UseWPF"/>
+    <CompilerVisibleProperty Include="UseWinUI"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -11,6 +14,15 @@
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_GenerateConstructor" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_CreateReactiveUIWhenActivated" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_SetReactiveUIDataContext" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_BaseClass" />
   </ItemGroup>
+
+  <Target Name="CreateDefineConstants" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun;GenerateMSBuildEditorConfigFileCore">
+
+    <PropertyGroup>
+      <ViewBaseGenerator_DefineConstants>$(DefineConstants.Replace(';',','))</ViewBaseGenerator_DefineConstants>
+    </PropertyGroup>
+
+  </Target>
 
 </Project>

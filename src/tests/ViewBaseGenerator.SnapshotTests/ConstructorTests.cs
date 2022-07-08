@@ -41,7 +41,30 @@ public class ConstructorTests : VerifyBase
                 ["TestView.xaml.cs"] = new()
                 {
                     ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateConstructor"] = "global::System.Collections.Generic.List",
+                },
+            });
+
+        return this.CheckSourceAsync<ConstructorGenerator>(
+            options,
+            new AdditionalText[] { new MemoryAdditionalText("TestView.xaml.cs", "") });
+    }
+
+    [TestMethod]
+    public Task GeneratesWithViewModelCorrectly()
+    {
+        var options = new DictionaryAnalyzerConfigOptionsProvider(
+            globalOptions: new Dictionary<string, string>
+            {
+                ["build_property.ViewBaseGenerator_Namespace"] = "Views",
+                ["build_property.UseWPF"] = "true",
+            },
+            additionalTextOptions: new Dictionary<string, Dictionary<string, string>>
+            {
+                ["TestView.xaml.cs"] = new()
+                {
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateConstructor"] = "global::System.Collections.Generic.List",
                     ["build_metadata.AdditionalFiles.ViewBaseGenerator_ViewModelNamespace"] = "ViewModels",
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_BaseClass"] = "System.Windows.Controls.UserControl",
                 },
             });
 
