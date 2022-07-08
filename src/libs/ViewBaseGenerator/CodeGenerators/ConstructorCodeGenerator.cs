@@ -22,6 +22,9 @@ internal static class ConstructorCodeGenerator
         var dependencyProperty = constructor.Platform.HasValue
             ? GenerateTypeByPlatform(constructor.Platform.Value, "DependencyProperty")
             : string.Empty;
+        var propertyMetadata = constructor.Platform.HasValue
+            ? GenerateTypeByPlatform(constructor.Platform.Value, "PropertyMetadata")
+            : string.Empty;
 
         return @$"{(setRx ? @"
 using ReactiveUI;
@@ -42,7 +45,7 @@ namespace {@namespace}
                 ""ViewModel"",
                 typeof({viewModelType}),
                 typeof({constructor.Name}),
-                new global::System.Windows.PropertyMetadata(default({viewModelType})));
+                new {propertyMetadata}(default({viewModelType})));
 				
         /// <summary>
         /// Gets the binding root view model.
