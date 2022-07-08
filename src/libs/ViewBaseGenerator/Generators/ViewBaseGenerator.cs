@@ -34,7 +34,7 @@ public class ViewBaseGenerator : IIncrementalGenerator
         try
         {
             var viewBases = additionalTexts
-                .Where(text => options.GetOption(text, "BaseClass", prefix: Name) != null)
+                .Where(text => options.GetOption(text, "GenerateViewBase", prefix: Name) != null)
                 .Select(text => new ViewBase(
                     Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
                     Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewBase"),
