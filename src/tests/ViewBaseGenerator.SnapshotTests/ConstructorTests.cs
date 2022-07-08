@@ -40,7 +40,7 @@ public class ConstructorTests : VerifyBase
             {
                 ["TestView.xaml.cs"] = new()
                 {
-                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateConstructor"] = "global::System.Collections.Generic.List",
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateConstructor"] = "true",
                 },
             });
 
