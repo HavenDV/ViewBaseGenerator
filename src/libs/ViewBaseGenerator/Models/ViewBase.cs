@@ -4,6 +4,7 @@ internal readonly record struct ViewBase(
     string Modifier,
     string Name,
     string BaseClass,
-    string ViewModel)
+    string ViewModel,
+    Platform? Platform)
 {
 }

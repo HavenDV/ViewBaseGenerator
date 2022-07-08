@@ -33,13 +33,15 @@ public class ViewBaseGenerator : IIncrementalGenerator
     {
         try
         {
+            var platform = options.TryRecognizePlatform(prefix: Name);
             var viewBases = additionalTexts
                 .Where(text => options.GetOption(text, "GenerateViewBase", prefix: Name) != null)
                 .Select(text => new ViewBase(
                     Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
                     Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewBase"),
-                    BaseClass: options.GetOption(text, "BaseClass", prefix: Name) ?? string.Empty,
-                    ViewModel: $"{options.GetOption(text, "ViewModelNamespace", prefix: Name) ?? string.Empty}.{Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewModel")}"))
+                    BaseClass: options.GetRequiredOption(text, "BaseClass", prefix: Name) ?? string.Empty,
+                    ViewModel: $"{options.GetRequiredOption(text, "ViewModelNamespace", prefix: Name) ?? string.Empty}.{Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewModel")}",
+                    Platform: platform))
                 .ToArray();
 
             foreach (var viewBase in viewBases)

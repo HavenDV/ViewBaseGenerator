@@ -8,13 +8,17 @@ internal static class ViewBaseCodeGenerator
         string @namespace,
         ViewBase viewBase)
     {
+        var baseClass = !viewBase.BaseClass.Contains('.') && viewBase.Platform.HasValue
+            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, viewBase.BaseClass)
+            : viewBase.BaseClass.WithGlobalPrefix();
+
         return @$" 
 #nullable enable
 
 namespace {@namespace}
 {{
     {viewBase.Modifier} abstract partial class {viewBase.Name}
-    : {viewBase.BaseClass.WithGlobalPrefix()}<{viewBase.ViewModel.WithGlobalPrefix()}>
+    : {baseClass}<{viewBase.ViewModel.WithGlobalPrefix()}>
     {{
     }}
 }}

@@ -17,7 +17,9 @@ internal static class ConstructorCodeGenerator
             ? $", global::ReactiveUI.IViewFor<{viewModelType}>"
             : string.Empty;
         var baseClass = !string.IsNullOrWhiteSpace(constructor.BaseClass)
-            ? $" : {constructor.BaseClass.WithGlobalPrefix()}"
+            ? !constructor.BaseClass.Contains('.') && constructor.Platform.HasValue
+                ? GenerateTypeByPlatform(constructor.Platform.Value, constructor.BaseClass)
+                : $" : {constructor.BaseClass.WithGlobalPrefix()}"
             : string.Empty;
         var dependencyProperty = constructor.Platform.HasValue
             ? GenerateTypeByPlatform(constructor.Platform.Value, "DependencyProperty")
