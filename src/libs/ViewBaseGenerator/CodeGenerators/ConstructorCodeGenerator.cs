@@ -13,14 +13,17 @@ internal static class ConstructorCodeGenerator
         var setRx = constructor.SetReactiveUIDataContext || constructor.CreateReactiveUIWhenActivated;
         var generateViewModelProperty = !constructor.ViewModel.StartsWith(".");
         var viewModelType = constructor.ViewModel.WithGlobalPrefix();
-        var interfaces = generateViewModelProperty
-            ? $", global::ReactiveUI.IViewFor<{viewModelType}>"
-            : string.Empty;
-        var baseClass = !string.IsNullOrWhiteSpace(constructor.BaseClass)
-            ? !constructor.BaseClass.Contains('.') && constructor.Platform.HasValue
+        var interfaces = new List<string>();
+        if (!string.IsNullOrWhiteSpace(constructor.BaseClass))
+        {
+            interfaces.Add(!constructor.BaseClass.Contains('.') && constructor.Platform.HasValue
                 ? GenerateTypeByPlatform(constructor.Platform.Value, constructor.BaseClass)
-                : $" : {constructor.BaseClass.WithGlobalPrefix()}"
-            : string.Empty;
+                : constructor.BaseClass.WithGlobalPrefix());
+        }
+        if (generateViewModelProperty)
+        {
+            interfaces.Add($"global::ReactiveUI.IViewFor<{viewModelType}>");
+        }
         var dependencyProperty = constructor.Platform.HasValue
             ? GenerateTypeByPlatform(constructor.Platform.Value, "DependencyProperty")
             : string.Empty;
@@ -36,7 +39,7 @@ using ReactiveUI;
 
 namespace {@namespace}
 {{
-    {constructor.Modifier} partial class {constructor.Name}{baseClass}{interfaces}
+    {constructor.Modifier} partial class {constructor.Name}{(interfaces.Any() ? $" : {string.Join(", ", interfaces)}" : "")}
     {{
 {(generateViewModelProperty ? @$" 
         /// <summary>
