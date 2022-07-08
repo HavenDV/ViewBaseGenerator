@@ -35,11 +35,11 @@ public class ViewBaseGenerator : IIncrementalGenerator
         {
             var viewBases = additionalTexts
                 .Where(text => options.GetOption(text, "BaseClass", prefix: Name) != null)
-                .Select(text => ViewBase.FromPath(
-                    text.Path,
-                    options.GetOption(text, "Modifier", prefix: Name) ?? "public",
-                    options.GetOption(text, "BaseClass", prefix: Name) ?? string.Empty,
-                    options.GetOption(text, "ViewModelNamespace", prefix: Name) ?? string.Empty))
+                .Select(text => new ViewBase(
+                    Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
+                    Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewBase"),
+                    BaseClass: options.GetOption(text, "BaseClass", prefix: Name) ?? string.Empty,
+                    ViewModel: $"{options.GetOption(text, "ViewModelNamespace", prefix: Name) ?? string.Empty}.{Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewModel")}"))
                 .ToArray();
 
             foreach (var viewBase in viewBases)
