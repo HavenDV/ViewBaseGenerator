@@ -34,13 +34,13 @@ public class ConstructorTests : VerifyBase
         var options = new DictionaryAnalyzerConfigOptionsProvider(
             globalOptions: new Dictionary<string, string>
             {
-                ["build_property.ViewBaseGenerator_Namespace"] = "Views",
+                ["build_property.ConstructorGenerator_Namespace"] = "Views",
             },
             additionalTextOptions: new Dictionary<string, Dictionary<string, string>>
             {
                 ["TestView.xaml.cs"] = new()
                 {
-                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateConstructor"] = "true",
+                    ["build_metadata.AdditionalFiles.ConstructorGenerator_GenerateConstructor"] = "true",
                 },
             });
 
@@ -55,16 +55,16 @@ public class ConstructorTests : VerifyBase
         var options = new DictionaryAnalyzerConfigOptionsProvider(
             globalOptions: new Dictionary<string, string>
             {
-                ["build_property.ViewBaseGenerator_Namespace"] = "Views",
+                ["build_property.ConstructorGenerator_Namespace"] = "Views",
                 ["build_property.UseWPF"] = "true",
             },
             additionalTextOptions: new Dictionary<string, Dictionary<string, string>>
             {
                 ["TestView.xaml.cs"] = new()
                 {
-                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateConstructor"] = "global::System.Collections.Generic.List",
-                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_ViewModelNamespace"] = "ViewModels",
-                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_BaseClass"] = "System.Windows.Controls.UserControl",
+                    ["build_metadata.AdditionalFiles.ConstructorGenerator_GenerateConstructor"] = "global::System.Collections.Generic.List",
+                    ["build_metadata.AdditionalFiles.ConstructorGenerator_ViewModelNamespace"] = "ViewModels",
+                    ["build_metadata.AdditionalFiles.ConstructorGenerator_BaseClass"] = "System.Windows.Controls.UserControl",
                 },
             });
 

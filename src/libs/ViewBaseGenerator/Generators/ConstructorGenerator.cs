@@ -10,8 +10,8 @@ public class ConstructorGenerator : IIncrementalGenerator
 {
     #region Constants
 
-    public const string Name = nameof(ViewBaseGenerator);
-    public const string Id = "VBG";
+    public const string Name = nameof(ConstructorGenerator);
+    public const string Id = "CG";
 
     #endregion
 

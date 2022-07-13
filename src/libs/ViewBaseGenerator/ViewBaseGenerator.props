@@ -1,21 +1,27 @@
 ﻿<Project>
 
-  <ItemGroup>
-    <CompilerVisibleProperty Include="ViewBaseGenerator_Namespace"/>
+  <ItemGroup Label="Platform detection">
     <CompilerVisibleProperty Include="ViewBaseGenerator_DefineConstants"/>
     <CompilerVisibleProperty Include="UseWPF"/>
     <CompilerVisibleProperty Include="UseWinUI"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_GenerateConstructor" />
+  <ItemGroup Label="ViewBaseGenerator">
+    <CompilerVisibleProperty Include="ViewBaseGenerator_Namespace"/>
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_GenerateViewBase" />
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_BaseClass" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_Modifier" />
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_ViewModelNamespace" />
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_CreateReactiveUIWhenActivated" />
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_SetReactiveUIDataContext" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_BaseClass" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ViewBaseGenerator_ViewModelNamespace" />
+  </ItemGroup>
+
+  <ItemGroup Label="ConstructorGenerator">
+    <CompilerVisibleProperty Include="ConstructorGenerator_Namespace"/>
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_GenerateConstructor" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_Modifier" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_BaseClass" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_ViewModelNamespace" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_CreateReactiveUIWhenActivated" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_SetReactiveUIDataContext" />
   </ItemGroup>
 
   <Target Name="CreateDefineConstants" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun;GenerateMSBuildEditorConfigFileCore">
