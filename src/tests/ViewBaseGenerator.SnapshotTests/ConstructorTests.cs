@@ -62,7 +62,7 @@ public class ConstructorTests : VerifyBase
             {
                 ["TestView.xaml.cs"] = new()
                 {
-                    ["build_metadata.AdditionalFiles.ConstructorGenerator_GenerateConstructor"] = "global::System.Collections.Generic.List",
+                    ["build_metadata.AdditionalFiles.ConstructorGenerator_GenerateConstructor"] = "true",
                     ["build_metadata.AdditionalFiles.ConstructorGenerator_ViewModelNamespace"] = "ViewModels",
                     ["build_metadata.AdditionalFiles.ConstructorGenerator_BaseClass"] = "System.Windows.Controls.UserControl",
                 },

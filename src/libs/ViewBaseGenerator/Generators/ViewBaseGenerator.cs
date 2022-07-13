@@ -33,10 +33,19 @@ public class ViewBaseGenerator : IIncrementalGenerator
     {
         try
         {
-            var platform = options.TryRecognizePlatform(prefix: Name);
-            var viewBases = additionalTexts
+            var suitableAdditionalTexts = additionalTexts
                 .Where(text => options.GetOption(text, "GenerateViewBase", prefix: Name) != null)
+                .ToArray();
+            if (!suitableAdditionalTexts.Any())
+            {
+                return;
+            }
+
+            var @namespace = options.GetRequiredGlobalOption("Namespace", prefix: Name);
+            var platform = options.TryRecognizePlatform(prefix: Name);
+            var viewBases = suitableAdditionalTexts
                 .Select(text => new ViewBase(
+                    Namespace: @namespace,
                     Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
                     Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewBase"),
                     BaseClass: options.GetRequiredOption(text, "BaseClass", prefix: Name) ?? string.Empty,
@@ -48,9 +57,7 @@ public class ViewBaseGenerator : IIncrementalGenerator
             {
                 context.AddTextSource(
                     hintName: $"{viewBase.Name}.ViewBase.generated.cs",
-                    text: ViewBaseCodeGenerator.GenerateViewBase(
-                        options.GetRequiredGlobalOption("Namespace", prefix: Name),
-                        viewBase));
+                    text: ViewBaseCodeGenerator.GenerateViewBase(viewBase));
             }
         }
         catch (Exception exception)

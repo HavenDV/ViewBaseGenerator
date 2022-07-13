@@ -6,9 +6,7 @@ internal static class ConstructorCodeGenerator
 {
     #region Methods
 
-    public static string GenerateConstructor(
-        string @namespace,
-        Constructor constructor)
+    public static string GenerateConstructor(Constructor constructor)
     {
         var setRx = constructor.SetReactiveUIDataContext || constructor.CreateReactiveUIWhenActivated;
         var generateViewModelProperty = !constructor.ViewModel.StartsWith(".");
@@ -37,7 +35,7 @@ using ReactiveUI;
  
 #nullable enable
 
-namespace {@namespace}
+namespace {constructor.Namespace}
 {{
     {constructor.Modifier} partial class {constructor.Name}{(interfaces.Any() ? $" : {string.Join(", ", interfaces)}" : "")}
     {{

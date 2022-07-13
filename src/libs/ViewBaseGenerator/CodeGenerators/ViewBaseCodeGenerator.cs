@@ -4,9 +4,7 @@ namespace H.Generators;
 
 internal static class ViewBaseCodeGenerator
 {
-    public static string GenerateViewBase(
-        string @namespace,
-        ViewBase viewBase)
+    public static string GenerateViewBase(ViewBase viewBase)
     {
         var baseClass = !viewBase.BaseClass.Contains('.') && viewBase.Platform.HasValue
             ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, $"Controls.{viewBase.BaseClass}")
@@ -15,7 +13,7 @@ internal static class ViewBaseCodeGenerator
         return @$" 
 #nullable enable
 
-namespace {@namespace}
+namespace {viewBase.Namespace}
 {{
     {viewBase.Modifier} abstract partial class {viewBase.Name}
     : {baseClass}<{viewBase.ViewModel.WithGlobalPrefix()}>

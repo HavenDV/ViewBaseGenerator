@@ -33,10 +33,19 @@ public class ConstructorGenerator : IIncrementalGenerator
     {
         try
         {
-            var platform = options.TryRecognizePlatform(prefix: Name);
-            var constructors = additionalTexts
+            var suitableAdditionalTexts = additionalTexts
                 .Where(text => options.GetOption(text, "GenerateConstructor", prefix: Name) != null)
+                .ToArray();
+            if (!suitableAdditionalTexts.Any())
+            {
+                return;
+            }
+
+            var @namespace = options.GetRequiredGlobalOption("Namespace", prefix: Name);
+            var platform = options.TryRecognizePlatform(prefix: Name);
+            var constructors = suitableAdditionalTexts
                 .Select(text => new Constructor(
+                    Namespace: @namespace,
                     Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
                     Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)),
                     CreateReactiveUIWhenActivated: bool.Parse(options.GetOption(text, "CreateReactiveUIWhenActivated", prefix: Name) ?? bool.FalseString),
@@ -50,9 +59,7 @@ public class ConstructorGenerator : IIncrementalGenerator
             {
                 context.AddTextSource(
                     hintName: $"{constructor.Name}.Constructors.generated.cs",
-                    text: ConstructorCodeGenerator.GenerateConstructor(
-                        options.GetRequiredGlobalOption("Namespace", prefix: Name),
-                        constructor));
+                    text: ConstructorCodeGenerator.GenerateConstructor(constructor));
             }
         }
         catch (Exception exception)
