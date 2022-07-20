@@ -19,7 +19,7 @@
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_GenerateConstructor" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_Modifier" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_BaseClass" />
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_ViewModelNamespace" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_InheritFromViewBase" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_CreateReactiveUIWhenActivated" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_SetReactiveUIDataContext" />
   </ItemGroup>

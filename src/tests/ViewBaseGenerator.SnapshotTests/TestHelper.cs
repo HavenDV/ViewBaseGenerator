@@ -12,16 +12,14 @@ public static class TestHelper
         this VerifyBase verifier,
         AnalyzerConfigOptionsProvider options,
         AdditionalText[] additionalTexts,
+        bool addViewModels = true,
+        bool addViewBases = false,
         CancellationToken cancellationToken = default) where T : IIncrementalGenerator, new()
     {
-        var referenceAssemblies = ReferenceAssemblies.NetFramework.Net48.Wpf
-            .WithPackages(ImmutableArray.Create(new PackageIdentity("ReactiveUI.WPF", "18.2.9")));
-        var references = await referenceAssemblies.ResolveAsync(null, cancellationToken);
-        var compilation = (Compilation)CSharpCompilation.Create(
-            assemblyName: "Tests",
-            syntaxTrees: new[]
-            {
-                CSharpSyntaxTree.ParseText(@$"
+        var syntaxTrees = new List<SyntaxTree>();
+        if (addViewModels)
+        {
+            syntaxTrees.Add(CSharpSyntaxTree.ParseText(@$"
 namespace ViewModels
 {{
 {string.Concat(additionalTexts.Select(text => $@"
@@ -30,8 +28,27 @@ namespace ViewModels
     }}
 "))}
 }}
-", cancellationToken: cancellationToken),
-            },
+", cancellationToken: cancellationToken));
+        }
+        if (addViewBases)
+        {
+            syntaxTrees.Add(CSharpSyntaxTree.ParseText(@$"
+namespace Views
+{{
+{string.Concat(additionalTexts.Select(text => $@"
+    public class {text.Path.Replace("View", "ViewBase").Replace(".xaml.cs", string.Empty)}
+    {{
+    }}
+"))}
+}}
+", cancellationToken: cancellationToken));
+        }
+        var referenceAssemblies = ReferenceAssemblies.NetFramework.Net48.Wpf
+            .WithPackages(ImmutableArray.Create(new PackageIdentity("ReactiveUI.WPF", "18.2.9")));
+        var references = await referenceAssemblies.ResolveAsync(null, cancellationToken);
+        var compilation = (Compilation)CSharpCompilation.Create(
+            assemblyName: "Tests",
+            syntaxTrees: syntaxTrees,
             references: references,
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
         var generator = new T();

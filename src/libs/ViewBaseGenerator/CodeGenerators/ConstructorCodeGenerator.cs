@@ -9,25 +9,17 @@ internal static class ConstructorCodeGenerator
     public static string GenerateConstructor(Constructor constructor)
     {
         var setRx = constructor.SetReactiveUIDataContext || constructor.CreateReactiveUIWhenActivated;
-        var generateViewModelProperty = !constructor.ViewModel.StartsWith(".");
-        var viewModelType = constructor.ViewModel.WithGlobalPrefix();
         var interfaces = new List<string>();
-        if (!string.IsNullOrWhiteSpace(constructor.BaseClass))
+        if (constructor.InheritFromViewBase)
+        {
+            interfaces.Add($"{constructor.Name}Base");
+        }
+        else if (!string.IsNullOrWhiteSpace(constructor.BaseClass))
         {
             interfaces.Add(!constructor.BaseClass.Contains('.') && constructor.Platform.HasValue
                 ? GenerateTypeByPlatform(constructor.Platform.Value, $"Controls.{constructor.BaseClass}")
                 : constructor.BaseClass.WithGlobalPrefix());
         }
-        if (generateViewModelProperty)
-        {
-            interfaces.Add($"global::ReactiveUI.IViewFor<{viewModelType}>");
-        }
-        var dependencyProperty = constructor.Platform.HasValue
-            ? GenerateTypeByPlatform(constructor.Platform.Value, "DependencyProperty")
-            : string.Empty;
-        var propertyMetadata = constructor.Platform.HasValue
-            ? GenerateTypeByPlatform(constructor.Platform.Value, "PropertyMetadata")
-            : string.Empty;
 
         return @$"{(setRx ? @"
 using ReactiveUI;
@@ -39,37 +31,6 @@ namespace {constructor.Namespace}
 {{
     {constructor.Modifier} partial class {constructor.Name}{(interfaces.Any() ? $" : {string.Join(", ", interfaces)}" : "")}
     {{
-{(generateViewModelProperty ? @$" 
-        /// <summary>
-        /// The view model dependency property.
-        /// </summary>
-        public static readonly {dependencyProperty} ViewModelProperty =
-            {dependencyProperty}.Register(
-                ""ViewModel"",
-                typeof({viewModelType}),
-                typeof({constructor.Name}),
-                new {propertyMetadata}(default({viewModelType})));
-				
-        /// <summary>
-        /// Gets the binding root view model.
-        /// </summary>
-        public {viewModelType}? BindingRoot => ViewModel;
-
-        /// <inheritdoc/>
-        public {viewModelType}? ViewModel
-        {{
-            get => ({viewModelType})GetValue(ViewModelProperty);
-            set => SetValue(ViewModelProperty, value);
-        }}
-
-        /// <inheritdoc/>
-        object? global::ReactiveUI.IViewFor.ViewModel
-        {{
-            get => ViewModel;
-            set => ViewModel = ({viewModelType}?)value;
-        }}
-" : " ")}
- 
         partial void BeforeInitializeComponent();
         partial void AfterInitializeComponent();
 {(setRx ? @"
