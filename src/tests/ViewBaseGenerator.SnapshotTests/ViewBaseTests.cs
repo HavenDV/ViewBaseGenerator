@@ -50,4 +50,29 @@ public class ViewBaseTests : VerifyBase
             options,
             new AdditionalText[] { new MemoryAdditionalText("TestView.xaml.cs", "") });
     }
+
+    [TestMethod]
+    public Task AddViewModelDependencyProperty()
+    {
+        var options = new DictionaryAnalyzerConfigOptionsProvider(
+            globalOptions: new Dictionary<string, string>
+            {
+                ["build_property.ViewBaseGenerator_Namespace"] = "Views",
+                ["build_property.UseWPF"] = "true",
+            },
+            additionalTextOptions: new Dictionary<string, Dictionary<string, string>>
+            {
+                ["TestView.xaml.cs"] = new()
+                {
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateViewBase"] = "true",
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_BaseClass"] = "UserControl",
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_ViewModelNamespace"] = "ViewModels",
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_AddViewModelDependencyProperty"] = "true",
+                },
+            });
+
+        return this.CheckSourceAsync<ViewBaseGenerator>(
+            options,
+            new AdditionalText[] { new MemoryAdditionalText("TestView.xaml.cs", "") });
+    }
 }

@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
 using H.Generators.Extensions;
+using System.Linq;
 
 namespace H.Generators;
 
@@ -46,10 +47,11 @@ public class ViewBaseGenerator : IIncrementalGenerator
             var viewBases = suitableAdditionalTexts
                 .Select(text => new ViewBase(
                     Namespace: @namespace,
-                    Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
+                    Modifier: options.GetOption(text, nameof(ViewBase.Modifier), prefix: Name) ?? "public",
                     Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewBase"),
-                    BaseClass: options.GetRequiredOption(text, "BaseClass", prefix: Name) ?? string.Empty,
+                    BaseClass: options.GetRequiredOption(text, nameof(ViewBase.BaseClass), prefix: Name) ?? string.Empty,
                     ViewModel: $"{options.GetRequiredOption(text, "ViewModelNamespace", prefix: Name) ?? string.Empty}.{Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewModel")}",
+                    AddViewModelDependencyProperty: bool.Parse(options.GetOption(text, nameof(ViewBase.AddViewModelDependencyProperty), prefix: Name) ?? bool.FalseString),
                     Platform: platform))
                 .ToArray();
 

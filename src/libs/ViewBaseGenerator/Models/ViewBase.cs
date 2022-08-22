@@ -6,6 +6,7 @@ internal readonly record struct ViewBase(
     string Name,
     string BaseClass,
     string ViewModel,
+    bool AddViewModelDependencyProperty,
     Platform? Platform)
 {
 }

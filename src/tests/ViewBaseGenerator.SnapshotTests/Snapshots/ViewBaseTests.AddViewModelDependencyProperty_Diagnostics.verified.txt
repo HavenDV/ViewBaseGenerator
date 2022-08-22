@@ -1,0 +1,36 @@
+﻿[
+  {
+    Id: CS0103,
+    Title: ,
+    Severity: Error,
+    WarningLevel: 0,
+    Location: ViewBaseGenerator\H.Generators.ViewBaseGenerator\TestViewBase.ViewBase.generated.cs: (22,53)-(22,61),
+    Description: ,
+    HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0103),
+    MessageFormat: The name '{0}' does not exist in the current context,
+    Message: The name 'GetValue' does not exist in the current context,
+    Category: Compiler,
+    CustomTags: [
+      Compiler,
+      Telemetry,
+      NotConfigurable
+    ]
+  },
+  {
+    Id: CS0103,
+    Title: ,
+    Severity: Error,
+    WarningLevel: 0,
+    Location: ViewBaseGenerator\H.Generators.ViewBaseGenerator\TestViewBase.ViewBase.generated.cs: (23,19)-(23,27),
+    Description: ,
+    HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0103),
+    MessageFormat: The name '{0}' does not exist in the current context,
+    Message: The name 'SetValue' does not exist in the current context,
+    Category: Compiler,
+    CustomTags: [
+      Compiler,
+      Telemetry,
+      NotConfigurable
+    ]
+  }
+]
