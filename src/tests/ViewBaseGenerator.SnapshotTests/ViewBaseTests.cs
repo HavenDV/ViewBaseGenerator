@@ -67,6 +67,7 @@ public class ViewBaseTests : VerifyBase
                     ["build_metadata.AdditionalFiles.ViewBaseGenerator_GenerateViewBase"] = "true",
                     ["build_metadata.AdditionalFiles.ViewBaseGenerator_BaseClass"] = "UserControl",
                     ["build_metadata.AdditionalFiles.ViewBaseGenerator_ViewModelNamespace"] = "ViewModels",
+                    ["build_metadata.AdditionalFiles.ViewBaseGenerator_IsAbstract"] = "false",
                     ["build_metadata.AdditionalFiles.ViewBaseGenerator_AddViewModelDependencyProperty"] = "true",
                 },
             });

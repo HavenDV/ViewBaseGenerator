@@ -3,7 +3,7 @@
 
 namespace Views
 {
-    public abstract partial class TestViewBase
+    public partial class TestViewBase
     : global::System.Windows.Controls.UserControl
     {
         /// <summary>

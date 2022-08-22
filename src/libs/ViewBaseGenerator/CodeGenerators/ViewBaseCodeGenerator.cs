@@ -25,7 +25,7 @@ internal static class ViewBaseCodeGenerator
 
 namespace {viewBase.Namespace}
 {{
-    {viewBase.Modifier} abstract partial class {viewBase.Name}
+    {viewBase.Modifier}{(viewBase.IsAbstract ? " abstract" : "")} partial class {viewBase.Name}
     : {baseClass}
     {{
 {(viewBase.AddViewModelDependencyProperty ? @$" 
