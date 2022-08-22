@@ -8,8 +8,8 @@ internal static class ViewBaseCodeGenerator
     {
         var baseClass = !viewBase.BaseClass.Contains('.') && viewBase.Platform.HasValue
             ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, $"Controls.{viewBase.BaseClass}")
-            : viewBase.BaseClass.Contains("<>")
-                ? $"{viewBase.BaseClass.Replace("<>", string.Empty).WithGlobalPrefix()}<{viewBase.ViewModel.WithGlobalPrefix()}>"
+            : viewBase.IsGeneric
+                ? $"{viewBase.BaseClass.WithGlobalPrefix()}<{viewBase.ViewModel.WithGlobalPrefix()}>"
                 : viewBase.BaseClass.WithGlobalPrefix();
 
         var viewModelType = viewBase.ViewModel.WithGlobalPrefix();

@@ -51,6 +51,7 @@ public class ViewBaseGenerator : IIncrementalGenerator
                     Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewBase"),
                     BaseClass: options.GetRequiredOption(text, nameof(ViewBase.BaseClass), prefix: Name) ?? string.Empty,
                     ViewModel: $"{options.GetRequiredOption(text, "ViewModelNamespace", prefix: Name) ?? string.Empty}.{Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewModel")}",
+                    IsGeneric: bool.Parse(options.GetOption(text, nameof(ViewBase.IsGeneric), prefix: Name) ?? bool.FalseString),
                     IsAbstract: bool.Parse(options.GetOption(text, nameof(ViewBase.IsAbstract), prefix: Name) ?? bool.TrueString),
                     AddViewModelDependencyProperty: bool.Parse(options.GetOption(text, nameof(ViewBase.AddViewModelDependencyProperty), prefix: Name) ?? bool.FalseString),
                     Platform: platform))
