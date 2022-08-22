@@ -25,7 +25,7 @@
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_SetReactiveUIDataContext" />
   </ItemGroup>
 
-  <Target Name="CreateDefineConstants" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun;GenerateMSBuildEditorConfigFileCore">
+  <Target Name="ViewBaseGenerator_CreateDefineConstants" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun;GenerateMSBuildEditorConfigFileCore">
 
     <PropertyGroup>
       <ViewBaseGenerator_DefineConstants>$(DefineConstants.Replace(';',','))</ViewBaseGenerator_DefineConstants>

@@ -14,6 +14,9 @@ internal static class ViewBaseCodeGenerator
         var dependencyProperty = viewBase.Platform.HasValue
             ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, "DependencyProperty")
             : string.Empty;
+        var metadata = viewBase.Platform.HasValue
+            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, "PropertyMetadata")
+            : string.Empty;
 
         return @$" 
 #nullable enable
@@ -32,7 +35,7 @@ namespace {viewBase.Namespace}
                 ""ViewModel"",
                 typeof({viewModelType}),
                 typeof({viewBase.Name}),
-                new global::System.Windows.PropertyMetadata(default({viewModelType})));
+                new {metadata}(default({viewModelType})));
 
         /// <summary>
         /// The view model property.
