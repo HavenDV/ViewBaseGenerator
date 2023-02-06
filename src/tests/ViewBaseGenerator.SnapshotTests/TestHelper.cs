@@ -43,8 +43,7 @@ namespace Views
 }}
 ", cancellationToken: cancellationToken));
         }
-        var referenceAssemblies = ReferenceAssemblies.NetFramework.Net48.Wpf
-            .WithPackages(ImmutableArray.Create(new PackageIdentity("ReactiveUI.WPF", "18.2.9")));
+        var referenceAssemblies = ReferenceAssemblies.NetFramework.Net48.Wpf;
         var references = await referenceAssemblies.ResolveAsync(null, cancellationToken);
         var compilation = (Compilation)CSharpCompilation.Create(
             assemblyName: "Tests",

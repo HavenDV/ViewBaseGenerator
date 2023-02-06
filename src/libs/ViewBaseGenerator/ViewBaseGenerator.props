@@ -23,8 +23,6 @@
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_Modifier" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_BaseClass" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_InheritFromViewBase" />
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_CreateReactiveUIWhenActivated" />
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_SetReactiveUIDataContext" />
   </ItemGroup>
 
   <Target Name="ViewBaseGenerator_CreateDefineConstants" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun;GenerateMSBuildEditorConfigFileCore">

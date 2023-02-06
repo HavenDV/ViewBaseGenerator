@@ -2,7 +2,6 @@
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
 using H.Generators.Extensions;
-using System.Linq;
 
 namespace H.Generators;
 
@@ -11,8 +10,8 @@ public class ViewBaseGenerator : IIncrementalGenerator
 {
     #region Constants
 
-    public const string Name = nameof(ViewBaseGenerator);
-    public const string Id = "VBG";
+    private const string Name = nameof(ViewBaseGenerator);
+    private const string Id = "VBG";
 
     #endregion
 
@@ -49,8 +48,8 @@ public class ViewBaseGenerator : IIncrementalGenerator
                     Namespace: @namespace,
                     Modifier: options.GetOption(text, nameof(ViewBase.Modifier), prefix: Name) ?? "public",
                     Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewBase"),
-                    BaseClass: options.GetRequiredOption(text, nameof(ViewBase.BaseClass), prefix: Name) ?? string.Empty,
-                    ViewModel: $"{options.GetRequiredOption(text, "ViewModelNamespace", prefix: Name) ?? string.Empty}.{Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewModel")}",
+                    BaseClass: options.GetRequiredOption(text, nameof(ViewBase.BaseClass), prefix: Name),
+                    ViewModel: $"{options.GetRequiredOption(text, "ViewModelNamespace", prefix: Name)}.{Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)).Replace("View", "ViewModel")}",
                     IsGeneric: bool.Parse(options.GetOption(text, nameof(ViewBase.IsGeneric), prefix: Name) ?? bool.FalseString),
                     IsAbstract: bool.Parse(options.GetOption(text, nameof(ViewBase.IsAbstract), prefix: Name) ?? bool.TrueString),
                     AddViewModelDependencyProperty: bool.Parse(options.GetOption(text, nameof(ViewBase.AddViewModelDependencyProperty), prefix: Name) ?? bool.FalseString),

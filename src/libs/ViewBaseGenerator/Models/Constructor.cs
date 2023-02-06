@@ -5,9 +5,5 @@ internal readonly record struct Constructor(
     string Modifier,
     string Name,
     bool InheritFromViewBase,
-    bool CreateReactiveUIWhenActivated,
-    bool SetReactiveUIDataContext,
     string BaseClass,
-    Platform? Platform)
-{
-}
+    Platform? Platform);

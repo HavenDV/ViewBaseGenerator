@@ -10,8 +10,8 @@ public class ConstructorGenerator : IIncrementalGenerator
 {
     #region Constants
 
-    public const string Name = nameof(ConstructorGenerator);
-    public const string Id = "CG";
+    private const string Name = nameof(ConstructorGenerator);
+    private const string Id = "CG";
 
     #endregion
 
@@ -49,8 +49,6 @@ public class ConstructorGenerator : IIncrementalGenerator
                     Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
                     Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)),
                     InheritFromViewBase: bool.Parse(options.GetOption(text, nameof(Constructor.InheritFromViewBase), prefix: Name) ?? bool.FalseString),
-                    CreateReactiveUIWhenActivated: bool.Parse(options.GetOption(text, "CreateReactiveUIWhenActivated", prefix: Name) ?? bool.FalseString),
-                    SetReactiveUIDataContext: bool.Parse(options.GetOption(text, "SetReactiveUIDataContext", prefix: Name) ?? bool.FalseString),
                     BaseClass: options.GetOption(text, "BaseClass", prefix: Name) ?? string.Empty,
                     Platform: platform))
                 .ToArray();

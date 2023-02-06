@@ -1,53 +1,29 @@
 # ViewBaseGenerator
 The main purpose of the generator is to avoid boilerplate code in the code-behind views files, like this:
 ```cs
-public abstract partial class PreviewDropViewBase
-: ReactiveUI.Uno.ReactiveUserControl<Ratbuddyssey.ViewModels.PreviewDropViewModel>
+public partial class MainPage
 {
-}
-
-public partial class MainView
-{
-    public MainView()
+    public MainPage()
     {
         InitializeComponent();
-
-        _ = this.WhenActivated(disposables =>
-        {
-            DataContext = ViewModel;
-        });
     }
 }
 ```
 
 At the same time, the generator supports the ability to add your code anywhere through the definition of partial methods for special cases:
 ```cs
-public partial class MainView
+public partial class MainPage
 {
     partial void BeforeInitializeComponent();
     partial void AfterInitializeComponent();
 
-    partial void AfterWhenActivated(CompositeDisposable disposables);
-
-    public MainView()
+    public MainPage()
     {
         BeforeInitializeComponent();
 
         InitializeComponent();
 
         AfterInitializeComponent();
-
-        _ = this.WhenActivated(disposables =>
-        {
-            DataContext = ViewModel;
-
-            if (ViewModel == null)
-            {
-                return;
-            }
-
-            AfterWhenActivated(disposables);
-        });
     }
 }
 ```
@@ -73,26 +49,14 @@ Install-Package ViewBaseGenerator
 ```xml
   <PropertyGroup>
     <ViewBaseGenerator_Namespace>YourNamespace.Views</ViewBaseGenerator_Namespace>
-  </PropertyGroup
+  </PropertyGroup>
 
   <ItemGroup Label="View Constructors">
-    <AdditionalFiles Include="Views\**\*.xaml" ViewBaseGenerator_GenerateConstructor="True" ViewBaseGenerator_SetReactiveUIDataContext="True" />
+    <AdditionalFiles Include="Views\**\*.xaml" ViewBaseGenerator_GenerateConstructor="True" />
   </ItemGroup>
 
   <ItemGroup Label="ViewBase">
     <AdditionalFiles Include="Views\**\*.xaml.cs" ViewBaseGenerator_BaseClass="ReactiveUI.Uno.ReactiveUserControl" ViewBaseGenerator_ViewModelNamespace="YourNamespace.ViewModels" />
-  </ItemGroup>
-```
-
-Although ReactiveUI is supported, you can also use the generator without it, 
-just to get rid of the `InitializeComponent()` constructors. In this case, you need code like:
-```xml
-  <PropertyGroup>
-    <ViewBaseGenerator_Namespace>YourNamespace.Views</ViewBaseGenerator_Namespace>
-  </PropertyGroup
-
-  <ItemGroup Label="View Constructors">
-    <AdditionalFiles Include="Views\**\*.xaml" ViewBaseGenerator_GenerateConstructor="True" />
   </ItemGroup>
 ```
 

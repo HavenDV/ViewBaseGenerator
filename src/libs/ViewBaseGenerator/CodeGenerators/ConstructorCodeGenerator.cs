@@ -8,7 +8,6 @@ internal static class ConstructorCodeGenerator
 
     public static string GenerateConstructor(Constructor constructor)
     {
-        var setRx = constructor.SetReactiveUIDataContext || constructor.CreateReactiveUIWhenActivated;
         var interfaces = new List<string>();
         if (constructor.InheritFromViewBase)
         {
@@ -21,9 +20,7 @@ internal static class ConstructorCodeGenerator
                 : constructor.BaseClass.WithGlobalPrefix());
         }
 
-        return @$"{(setRx ? @"
-using ReactiveUI;
-" : " ")}
+        return @$" 
  
 #nullable enable
 
@@ -33,8 +30,6 @@ namespace {constructor.Namespace}
     {{
         partial void BeforeInitializeComponent();
         partial void AfterInitializeComponent();
-{(setRx ? @"
-        partial void AfterWhenActivated(global::System.Reactive.Disposables.CompositeDisposable disposables);" : " ")}
 
         public {constructor.Name}()
         {{
@@ -43,14 +38,6 @@ namespace {constructor.Namespace}
             InitializeComponent();
 
             AfterInitializeComponent();
-{(setRx ? @$"
-            _ = this.WhenActivated(disposables =>
-            {{
-{(constructor.SetReactiveUIDataContext ? @" 
-                DataContext = ViewModel;
-" : " ")}
-                AfterWhenActivated(disposables);
-            }});" : " ")}
         }}
     }}
 }}
