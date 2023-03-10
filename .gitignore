@@ -351,3 +351,9 @@ MigrationBackup/
 
 # Idea
 /.idea/
+
+# Rider files
+/.idea/*
+
+# Snapshot files
+**/*.received.*
