@@ -6,18 +6,18 @@ internal static class ViewBaseCodeGenerator
 {
     public static string GenerateViewBase(ViewBase viewBase)
     {
-        var baseClass = !viewBase.BaseClass.Contains('.') && viewBase.Platform.HasValue
-            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, $"Controls.{viewBase.BaseClass}")
+        var baseClass = !viewBase.BaseClass.Contains('.') && viewBase.Framework != Framework.None
+            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Framework, $"Controls.{viewBase.BaseClass}")
             : viewBase.IsGeneric
                 ? $"{viewBase.BaseClass.WithGlobalPrefix()}<{viewBase.ViewModel.WithGlobalPrefix()}>"
                 : viewBase.BaseClass.WithGlobalPrefix();
 
         var viewModelType = viewBase.ViewModel.WithGlobalPrefix();
-        var dependencyProperty = viewBase.Platform.HasValue
-            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, "DependencyProperty")
+        var dependencyProperty = viewBase.Framework != Framework.None
+            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Framework, "DependencyProperty")
             : string.Empty;
-        var metadata = viewBase.Platform.HasValue
-            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Platform.Value, "PropertyMetadata")
+        var metadata = viewBase.Framework != Framework.None
+            ? ConstructorCodeGenerator.GenerateTypeByPlatform(viewBase.Framework, "PropertyMetadata")
             : string.Empty;
 
         return @$" 

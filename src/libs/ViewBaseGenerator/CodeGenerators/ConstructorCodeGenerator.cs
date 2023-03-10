@@ -15,8 +15,8 @@ internal static class ConstructorCodeGenerator
         }
         else if (!string.IsNullOrWhiteSpace(constructor.BaseClass))
         {
-            interfaces.Add(!constructor.BaseClass.Contains('.') && constructor.Platform.HasValue
-                ? GenerateTypeByPlatform(constructor.Platform.Value, $"Controls.{constructor.BaseClass}")
+            interfaces.Add(!constructor.BaseClass.Contains('.') && constructor.Framework != Framework.None
+                ? GenerateTypeByPlatform(constructor.Framework, $"Controls.{constructor.BaseClass}")
                 : constructor.BaseClass.WithGlobalPrefix());
         }
 
@@ -44,14 +44,14 @@ namespace {constructor.Namespace}
  ".RemoveBlankLinesWhereOnlyWhitespaces();
     }
 
-    public static string GenerateTypeByPlatform(Platform platform, string name)
+    public static string GenerateTypeByPlatform(Framework framework, string name)
     {
-        return (platform switch
+        return (framework switch
         {
-            Platform.WPF => $"System.Windows.{name}",
-            Platform.UWP or Platform.Uno => $"Windows.UI.Xaml.{name}",
-            Platform.WinUI or Platform.UnoWinUI => $"Microsoft.UI.Xaml.{name}",
-            Platform.Avalonia => $"Avalonia.{name}",
+            Framework.Wpf => $"System.Windows.{name}",
+            Framework.Uwp or Framework.Uno => $"Windows.UI.Xaml.{name}",
+            Framework.WinUi or Framework.UnoWinUi => $"Microsoft.UI.Xaml.{name}",
+            Framework.Avalonia => $"Avalonia.{name}",
             _ => throw new InvalidOperationException("Platform is not supported."),
         }).WithGlobalPrefix();
     }

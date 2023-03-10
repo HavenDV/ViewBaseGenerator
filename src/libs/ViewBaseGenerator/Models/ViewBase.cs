@@ -9,4 +9,4 @@ internal readonly record struct ViewBase(
     bool IsGeneric,
     bool IsAbstract,
     bool AddViewModelDependencyProperty,
-    Platform? Platform);
+    Framework Framework);

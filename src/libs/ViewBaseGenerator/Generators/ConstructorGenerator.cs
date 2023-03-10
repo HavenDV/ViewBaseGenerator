@@ -19,54 +19,37 @@ public class ConstructorGenerator : IIncrementalGenerator
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        context.RegisterSourceOutput(
-            context.CompilationProvider
-                .Combine(context.AnalyzerConfigOptionsProvider)
-                .Combine(context.AdditionalTextsProvider.Collect()),
-            static (context, tuple) => Execute(tuple.Left.Right, tuple.Right, context));
+        context.AdditionalTextsProvider
+            .Combine(context.AnalyzerConfigOptionsProvider)
+            .Where(static x => x.Right.GetOption(x.Left, "GenerateConstructor", prefix: Name) != null)
+            .SelectAndReportExceptions(PrepareData, context, Id)
+            .SelectAndReportExceptions(GetSource, context, Id)
+            .AddSource(context);
     }
 
-    private static void Execute(
-        AnalyzerConfigOptionsProvider options,
-        ImmutableArray<AdditionalText> additionalTexts,
-        SourceProductionContext context)
+    private static Constructor PrepareData(
+        (AdditionalText Text, AnalyzerConfigOptionsProvider Options) tuple)
     {
-        try
-        {
-            var suitableAdditionalTexts = additionalTexts
-                .Where(text => options.GetOption(text, "GenerateConstructor", prefix: Name) != null)
-                .ToArray();
-            if (!suitableAdditionalTexts.Any())
-            {
-                return;
-            }
+        var (text, options) = tuple;
+        
+        var @namespace = options.GetRequiredGlobalOption("Namespace", prefix: Name);
+        var framework = options.TryRecognizeFramework();
+            
+        return new Constructor(
+            Namespace: @namespace,
+            Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
+            Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)),
+            InheritFromViewBase: bool.Parse(
+                options.GetOption(text, nameof(Constructor.InheritFromViewBase), prefix: Name) ?? bool.FalseString),
+            BaseClass: options.GetOption(text, "BaseClass", prefix: Name) ?? string.Empty,
+            Framework: framework);
+    }
 
-            var @namespace = options.GetRequiredGlobalOption("Namespace", prefix: Name);
-            var platform = options.TryRecognizePlatform(prefix: Name);
-            var constructors = suitableAdditionalTexts
-                .Select(text => new Constructor(
-                    Namespace: @namespace,
-                    Modifier: options.GetOption(text, "Modifier", prefix: Name) ?? "public",
-                    Name: Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(text.Path)),
-                    InheritFromViewBase: bool.Parse(options.GetOption(text, nameof(Constructor.InheritFromViewBase), prefix: Name) ?? bool.FalseString),
-                    BaseClass: options.GetOption(text, "BaseClass", prefix: Name) ?? string.Empty,
-                    Platform: platform))
-                .ToArray();
-
-            foreach (var constructor in constructors)
-            {
-                context.AddTextSource(
-                    hintName: $"{constructor.Name}.Constructors.generated.cs",
-                    text: ConstructorCodeGenerator.GenerateConstructor(constructor));
-            }
-        }
-        catch (Exception exception)
-        {
-            context.ReportException(
-                id: "001",
-                exception: exception,
-                prefix: Id);
-        }
+    private static FileWithName GetSource(Constructor constructor)
+    {
+        return new FileWithName(
+            Name: $"{constructor.Name}.Constructors.generated.cs",
+            Text: ConstructorCodeGenerator.GenerateConstructor(constructor));
     }
 
     #endregion

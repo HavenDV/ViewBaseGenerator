@@ -1,9 +1,10 @@
 ﻿<Project>
 
   <ItemGroup Label="Platform detection">
-    <CompilerVisibleProperty Include="ViewBaseGenerator_DefineConstants"/>
+    <CompilerVisibleProperty Include="RecognizeFramework_DefineConstants"/>
     <CompilerVisibleProperty Include="UseWPF"/>
     <CompilerVisibleProperty Include="UseWinUI"/>
+    <CompilerVisibleProperty Include="UseMaui"/>
   </ItemGroup>
 
   <ItemGroup Label="ViewBaseGenerator">
@@ -25,10 +26,10 @@
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ConstructorGenerator_InheritFromViewBase" />
   </ItemGroup>
 
-  <Target Name="ViewBaseGenerator_CreateDefineConstants" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun;GenerateMSBuildEditorConfigFileCore">
+  <Target Name="CreateDefineConstants" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun;GenerateMSBuildEditorConfigFileCore">
 
     <PropertyGroup>
-      <ViewBaseGenerator_DefineConstants>$(DefineConstants.Replace(';',','))</ViewBaseGenerator_DefineConstants>
+      <RecognizeFramework_DefineConstants>$(DefineConstants.Replace(';',','))</RecognizeFramework_DefineConstants>
     </PropertyGroup>
 
   </Target>

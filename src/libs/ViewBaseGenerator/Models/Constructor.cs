@@ -6,4 +6,4 @@ internal readonly record struct Constructor(
     string Name,
     bool InheritFromViewBase,
     string BaseClass,
-    Platform? Platform);
+    Framework Framework);

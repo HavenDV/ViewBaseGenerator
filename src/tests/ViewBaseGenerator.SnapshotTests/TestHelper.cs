@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using H.Generators.Tests.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -60,7 +61,7 @@ namespace Views
         
         await Task.WhenAll(
             verifier
-                .Verify(diagnostics)
+                .Verify(diagnostics.NormalizeLocations())
                 .UseDirectory("Snapshots")
                 .UseTextForParameters("Diagnostics"),
             verifier

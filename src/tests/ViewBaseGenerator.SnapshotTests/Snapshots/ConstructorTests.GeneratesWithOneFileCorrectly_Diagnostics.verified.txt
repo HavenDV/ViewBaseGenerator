@@ -4,7 +4,7 @@
     Title: ,
     Severity: Error,
     WarningLevel: 0,
-    Location: ViewBaseGenerator\H.Generators.ConstructorGenerator\TestView.Constructors.generated.cs: (13,12)-(13,31),
+    Location: ViewBaseGenerator/H.Generators.ConstructorGenerator/TestView.Constructors.generated.cs: (13,12)-(13,31),
     Description: ,
     HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0103),
     MessageFormat: The name '{0}' does not exist in the current context,
