@@ -1,4 +1,11 @@
 # ViewBaseGenerator
+
+> [!IMPORTANT]
+> This project is retired and no longer maintained. The `ViewBaseGenerator`
+> NuGet package is deprecated; existing versions remain available for restore.
+> Replace generated view bases and constructors with explicit partial classes
+> in the consuming application.
+
 The main purpose of the generator is to avoid boilerplate code in the code-behind views files, like this:
 ```cs
 public partial class MainPage
